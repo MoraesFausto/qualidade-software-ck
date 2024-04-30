@@ -1,0 +1,265 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > WordCounter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.util</a>
+</div>
+
+<h1>Coverage Summary for Class: WordCounter (com.github.mauricioaniche.ck.util)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">WordCounter</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (4/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98%
+  </span>
+  <span class="absValue">
+    (49/50)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">WordCounter$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (52/52)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    83,3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    99%
+  </span>
+  <span class="absValue">
+    (101/102)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.util;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+<b class="nc">&nbsp;public class WordCounter {</b>
+&nbsp;
+&nbsp;	private static Set&lt;String&gt; javaKeywords;
+&nbsp;
+&nbsp;	static {
+<b class="fc">&nbsp;		javaKeywords = new HashSet&lt;String&gt;(){{</b>
+<b class="fc">&nbsp;			add(&quot;abstract&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;continue&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;for&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;new&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;switch&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;assert***&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;default&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;goto*&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;package&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;synchronized&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;boolean&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;do&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;if&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;private&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;this&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;break&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;double&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;implements&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;protected&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;throw&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;byte&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;else&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;import&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;public&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;throws&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;case&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;enum****&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;instanceof&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;return&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;transient&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;catch&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;extends&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;int&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;short&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;try&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;char&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;final&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;interface&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;static&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;void&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;class&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;finally&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;long&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;strictfp**&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;volatile&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;const*&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;float&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;native&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;super&quot;);</b>
+<b class="fc">&nbsp;			add(&quot;while&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;			add(&quot;String&quot;);</b>
+&nbsp;		}};
+&nbsp;	}
+&nbsp;
+&nbsp;
+&nbsp;	public static Set&lt;String&gt; wordsIn(String fullString) {
+<b class="fc">&nbsp;		String[] cleanString = fullString</b>
+<b class="fc">&nbsp;				.replace(&quot;\t&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;\n&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;\r&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;(&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;)&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;{&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;}&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;=&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;&gt;&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;&gt;&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;&amp;&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;|&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;!&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;+&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;*&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;/&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;-&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;;&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.split(&quot; &quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;		List&lt;String&gt; strings = Arrays.stream(cleanString).filter(word -&gt; !javaKeywords.contains(word))</b>
+<b class="fc">&nbsp;				.filter(word -&gt; !word.isEmpty())</b>
+<b class="fc">&nbsp;				.filter(word -&gt; word.matches(&quot;\\w*&quot;))</b>
+<b class="fc">&nbsp;				.filter(word -&gt; !word.matches(&quot;[0-9]*&quot;))</b>
+<b class="fc">&nbsp;				.collect(Collectors.toList());</b>
+&nbsp;
+<b class="fc">&nbsp;		HashSet&lt;String&gt; words = new HashSet&lt;&gt;();</b>
+<b class="fc">&nbsp;		for(String string : strings) {</b>
+<b class="fc">&nbsp;			words.addAll(breakString(string));</b>
+<b class="fc">&nbsp;		}</b>
+&nbsp;
+<b class="fc">&nbsp;		return words;</b>
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	private static Collection&lt;? extends String&gt; breakString(String string) {
+&nbsp;
+<b class="fc">&nbsp;		if(string.length() == 1)</b>
+<b class="fc">&nbsp;			return Arrays.asList(string);</b>
+&nbsp;
+<b class="fc">&nbsp;		int current = 0;</b>
+<b class="fc">&nbsp;		List&lt;String&gt; words = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;		for(int i = 1; i &lt; string.length(); i++) {</b>
+<b class="fc">&nbsp;			if(string.charAt(i) == &#39;_&#39; || Character.isUpperCase(string.charAt(i))) {</b>
+<b class="fc">&nbsp;				String wordToAdd = string.substring(current, i);</b>
+<b class="fc">&nbsp;				words.add(wordToAdd);</b>
+<b class="fc">&nbsp;				current = i + (string.charAt(i) == &#39;_&#39; ? 1 : 0);</b>
+&nbsp;			}
+&nbsp;		}
+<b class="fc">&nbsp;		String remainingWord = string.substring(current);</b>
+<b class="fc">&nbsp;		words.add(remainingWord);</b>
+<b class="fc">&nbsp;		return words;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;
+&nbsp;	public static String removeSpacesAndIdentation(String toString) {
+<b class="fc">&nbsp;		return toString</b>
+<b class="fc">&nbsp;				.trim()</b>
+<b class="fc">&nbsp;				.replace(&quot;\r&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;\t&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replace(&quot;\n&quot;, &quot; &quot;)</b>
+<b class="fc">&nbsp;				.replaceAll(&quot; +&quot;, &quot; &quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

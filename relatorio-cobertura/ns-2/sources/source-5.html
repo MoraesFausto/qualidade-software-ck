@@ -1,0 +1,440 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Coupling</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.metric</a>
+</div>
+
+<h1>Coverage Summary for Class: Coupling (com.github.mauricioaniche.ck.metric)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Coupling</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96,6%
+  </span>
+  <span class="absValue">
+    (28/29)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    74,5%
+  </span>
+  <span class="absValue">
+    (105/141)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.metric;
+&nbsp;
+&nbsp;import com.github.mauricioaniche.ck.CKClassResult;
+&nbsp;import com.github.mauricioaniche.ck.CKMethodResult;
+&nbsp;import com.github.mauricioaniche.ck.util.JDTUtils;
+&nbsp;
+&nbsp;import org.eclipse.jdt.core.dom.*;
+&nbsp;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;public class Coupling implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
+&nbsp;
+&nbsp;	private CouplingExtras extras;
+&nbsp;	private String className;
+&nbsp;	private String methodName;
+&nbsp;	
+<b class="fc">&nbsp;	public Coupling() {</b>
+<b class="fc">&nbsp;		this.extras = CouplingExtras.getInstance();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void visit(VariableDeclarationStatement node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			coupleTo(node.getType());</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void visit(ClassInstanceCreation node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			coupleTo(node.getType());</b>
+<b class="fc">&nbsp;		} else if(this.methodName != null) {	</b>
+<b class="fc">&nbsp;			IMethodBinding binding = node.resolveConstructorBinding();</b>
+<b class="fc">&nbsp;			coupleTo(binding);</b>
+&nbsp;		} 
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void visit(ArrayCreation node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			coupleTo(node.getType());</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void visit(FieldDeclaration node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			coupleTo(node.getType());</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(ReturnStatement node) {
+<b class="fc">&nbsp;		if(this.className != null){</b>
+<b class="fc">&nbsp;			if (node.getExpression() != null) {</b>
+<b class="fc">&nbsp;				coupleTo(node.getExpression().resolveTypeBinding());</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void visit(TypeLiteral node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			coupleTo(node.getType());</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void visit(ThrowStatement node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			if(node.getExpression()!=null)</b>
+<b class="fc">&nbsp;				coupleTo(node.getExpression().resolveTypeBinding());</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(TypeDeclaration node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			ITypeBinding resolvedType = node.resolveBinding();</b>
+&nbsp;	
+<b class="fc">&nbsp;			if(resolvedType!=null) {</b>
+<b class="fc">&nbsp;				ITypeBinding binding = resolvedType.getSuperclass();</b>
+<b class="fc">&nbsp;				if (binding != null)</b>
+<b class="fc">&nbsp;					coupleTo(binding);</b>
+&nbsp;	
+<b class="fc">&nbsp;				for (ITypeBinding interfaces : resolvedType.getInterfaces()) {</b>
+<b class="fc">&nbsp;					coupleTo(interfaces);</b>
+&nbsp;				}
+<b class="fc">&nbsp;			} else {</b>
+<b class="nc">&nbsp;				coupleTo(node.getSuperclassType());</b>
+<b class="nc">&nbsp;				List&lt;Type&gt; list = node.superInterfaceTypes();</b>
+<b class="nc">&nbsp;				list.forEach(x -&gt; coupleTo(x));</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(MethodDeclaration node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			IMethodBinding resolvedMethod = node.resolveBinding();</b>
+<b class="fc">&nbsp;			if (resolvedMethod != null) {</b>
+&nbsp;	
+<b class="fc">&nbsp;				coupleTo(resolvedMethod.getReturnType());</b>
+&nbsp;	
+<b class="fc">&nbsp;				for (ITypeBinding param : resolvedMethod.getParameterTypes()) {</b>
+<b class="fc">&nbsp;					coupleTo(param);</b>
+&nbsp;				}
+&nbsp;			} else {
+<b class="fc">&nbsp;				coupleTo(node.getReturnType2());</b>
+<b class="fc">&nbsp;				List&lt;TypeParameter&gt; list = node.typeParameters();</b>
+<b class="fc">&nbsp;				list.forEach(x -&gt; coupleTo(x.getName()));</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void visit(CastExpression node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			coupleTo(node.getType());</b>
+&nbsp;		}
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void visit(InstanceofExpression node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			coupleTo(node.getRightOperand());</b>
+<b class="fc">&nbsp;			coupleTo(node.getLeftOperand().resolveTypeBinding());</b>
+&nbsp;		}
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void visit(MethodInvocation node) {
+&nbsp;		
+<b class="fc">&nbsp;		IMethodBinding binding = node.resolveMethodBinding();</b>
+<b class="fc">&nbsp;		if(binding!=null) {</b>
+<b class="fc">&nbsp;			if(this.className != null) {</b>
+<b class="fc">&nbsp;				coupleTo(binding.getDeclaringClass());</b>
+<b class="fc">&nbsp;			} else if(this.methodName != null) {</b>
+<b class="fc">&nbsp;				coupleTo(binding);</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(NormalAnnotation node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			coupleTo(node);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(MarkerAnnotation node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			coupleTo(node);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(SingleMemberAnnotation node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			coupleTo(node);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(ParameterizedType node) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+&nbsp;			
+&nbsp;			try {	
+<b class="fc">&nbsp;				ITypeBinding binding = node.resolveBinding();</b>
+<b class="fc">&nbsp;				if (binding != null) {</b>
+&nbsp;		
+<b class="fc">&nbsp;					coupleTo(binding);</b>
+&nbsp;		
+<b class="fc">&nbsp;					for (ITypeBinding types : binding.getTypeArguments()) {</b>
+<b class="fc">&nbsp;						coupleTo(types);</b>
+&nbsp;					}
+&nbsp;				} else {
+<b class="nc">&nbsp;					coupleTo(node.getType());</b>
+&nbsp;				}
+<b class="nc">&nbsp;			} catch (NullPointerException e) {</b>
+&nbsp;				// TODO: handle exception
+<b class="fc">&nbsp;			}</b>
+&nbsp;		}
+&nbsp;
+&nbsp;	}
+&nbsp;	private void coupleTo(Annotation type) {
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			ITypeBinding resolvedType = type.resolveTypeBinding();</b>
+<b class="fc">&nbsp;			if(resolvedType!=null)</b>
+<b class="fc">&nbsp;				coupleTo(resolvedType);</b>
+&nbsp;			else {
+<b class="fc">&nbsp;				addToSet(type.getTypeName().getFullyQualifiedName());</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	private void coupleTo(Type type) {
+<b class="fc">&nbsp;		if(type==null)</b>
+&nbsp;			return;
+&nbsp;
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			ITypeBinding resolvedBinding = type.resolveBinding();</b>
+<b class="fc">&nbsp;			if(resolvedBinding!=null)</b>
+<b class="fc">&nbsp;				coupleTo(resolvedBinding);</b>
+&nbsp;			else {
+<b class="fc">&nbsp;				if(type instanceof SimpleType) {</b>
+<b class="fc">&nbsp;					SimpleType castedType = (SimpleType) type;</b>
+<b class="fc">&nbsp;					addToSet(castedType.getName().getFullyQualifiedName());</b>
+<b class="fc">&nbsp;				}</b>
+<b class="nc">&nbsp;				else if(type instanceof QualifiedType) {</b>
+<b class="nc">&nbsp;					QualifiedType castedType = (QualifiedType) type;</b>
+<b class="nc">&nbsp;					addToSet(castedType.getName().getFullyQualifiedName());</b>
+<b class="nc">&nbsp;				}</b>
+<b class="nc">&nbsp;				else if(type instanceof NameQualifiedType) {</b>
+<b class="nc">&nbsp;					NameQualifiedType castedType = (NameQualifiedType) type;</b>
+<b class="nc">&nbsp;					addToSet(castedType.getName().getFullyQualifiedName());</b>
+<b class="nc">&nbsp;				}</b>
+<b class="nc">&nbsp;				else if(type instanceof ParameterizedType) {</b>
+<b class="nc">&nbsp;					ParameterizedType castedType = (ParameterizedType) type;</b>
+<b class="nc">&nbsp;					coupleTo(castedType.getType());</b>
+<b class="nc">&nbsp;				}</b>
+<b class="nc">&nbsp;				else if(type instanceof WildcardType) {</b>
+<b class="nc">&nbsp;					WildcardType castedType = (WildcardType) type;</b>
+<b class="nc">&nbsp;					coupleTo(castedType.getBound());</b>
+<b class="nc">&nbsp;				}</b>
+<b class="nc">&nbsp;				else if(type instanceof ArrayType) {</b>
+<b class="nc">&nbsp;					ArrayType castedType = (ArrayType) type;</b>
+<b class="nc">&nbsp;					coupleTo(castedType.getElementType());</b>
+<b class="nc">&nbsp;				}</b>
+<b class="nc">&nbsp;				else if(type instanceof IntersectionType) {</b>
+<b class="nc">&nbsp;					IntersectionType castedType = (IntersectionType) type;</b>
+<b class="nc">&nbsp;					List&lt;Type&gt; types = castedType.types();</b>
+<b class="nc">&nbsp;					types.stream().forEach(x -&gt; coupleTo(x));</b>
+<b class="nc">&nbsp;				}</b>
+<b class="nc">&nbsp;				else if(type instanceof UnionType) {</b>
+<b class="nc">&nbsp;					UnionType castedType = (UnionType) type;</b>
+<b class="nc">&nbsp;					List&lt;Type&gt; types = castedType.types();</b>
+<b class="nc">&nbsp;					types.stream().forEach(x -&gt; coupleTo(x));</b>
+&nbsp;				}
+&nbsp;			}
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	private void coupleTo(SimpleName name) {
+<b class="nc">&nbsp;		if(this.className != null) {</b>
+<b class="nc">&nbsp;			addToSet(name.getFullyQualifiedName());</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	private void coupleTo(ITypeBinding binding) {
+&nbsp;
+<b class="fc">&nbsp;		if(this.className != null) {</b>
+<b class="fc">&nbsp;			if (binding == null)</b>
+&nbsp;				return;
+<b class="fc">&nbsp;			if (binding.isWildcardType())</b>
+&nbsp;				return;
+<b class="fc">&nbsp;			if (binding.isNullType())</b>
+&nbsp;				return;
+&nbsp;	
+<b class="fc">&nbsp;			String type = binding.getQualifiedName();</b>
+<b class="fc">&nbsp;			if (type.equals(&quot;null&quot;))</b>
+&nbsp;				return;
+&nbsp;	
+<b class="fc">&nbsp;			if (isFromJava(type) || binding.isPrimitive())</b>
+&nbsp;				return;
+&nbsp;	
+&nbsp;	
+<b class="fc">&nbsp;			String cleanedType = cleanClassName(type);</b>
+<b class="fc">&nbsp;			addToSet(cleanedType);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;	
+&nbsp;	private void coupleTo(IMethodBinding binding) {
+&nbsp;		
+<b class="fc">&nbsp;		if(binding == null)</b>
+&nbsp;			return;
+&nbsp;		
+<b class="fc">&nbsp;		String methodNameInvoked = JDTUtils.getQualifiedMethodFullName(binding);</b>
+&nbsp;		
+<b class="fc">&nbsp;		if (methodNameInvoked.equals(&quot;null&quot;))</b>
+&nbsp;			return;
+&nbsp;
+<b class="fc">&nbsp;		if (isFromJava(methodNameInvoked))</b>
+&nbsp;			return;
+&nbsp;		
+<b class="fc">&nbsp;		addToSet(methodNameInvoked);</b>
+&nbsp;		
+&nbsp;	}
+&nbsp;
+&nbsp;	private String cleanClassName(String type) {
+&nbsp;		// remove possible array(s) in the class name
+<b class="fc">&nbsp;		String cleanedType = type.replace(&quot;[]&quot;, &quot;&quot;).replace(&quot;\\$&quot;, &quot;.&quot;);</b>
+&nbsp;
+&nbsp;		// remove generics declaration, let&#39;s stype with the type
+<b class="fc">&nbsp;		if(cleanedType.contains(&quot;&lt;&quot;))</b>
+<b class="fc">&nbsp;			cleanedType = cleanedType.substring(0, cleanedType.indexOf(&quot;&lt;&quot;));</b>
+&nbsp;
+<b class="fc">&nbsp;		return cleanedType;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private boolean isFromJava(String type) {
+<b class="fc">&nbsp;		return type.startsWith(&quot;java.&quot;) || type.startsWith(&quot;javax.&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private void addToSet(String name) {
+<b class="fc">&nbsp;		if(className != null){</b>
+<b class="fc">&nbsp;			this.extras.addToSetClassIn(name, this.className);</b>
+<b class="fc">&nbsp;			this.extras.addToSetClassOut(this.className, name);</b>
+&nbsp;		} else {
+<b class="fc">&nbsp;			this.extras.addToSetMethodIn(name, this.methodName);</b>
+<b class="fc">&nbsp;			this.extras.addToSetMethodOut(this.methodName, name);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void setResult(CKClassResult result) {
+&nbsp;		
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void setResult(CKMethodResult result) {
+&nbsp;		
+<b class="fc">&nbsp;	}</b>
+&nbsp;	
+&nbsp;	@Override
+&nbsp;	public void setClassName(String className) {
+<b class="fc">&nbsp;		this.className = className;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	@Override
+&nbsp;	public void setMethodName(String methodName) {
+<b class="fc">&nbsp;		this.methodName = methodName;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

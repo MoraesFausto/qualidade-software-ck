@@ -1,0 +1,204 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Runner</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck</a>
+</div>
+
+<h1>Coverage Summary for Class: Runner (com.github.mauricioaniche.ck)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Runner</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/27)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Runner$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/31)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck;
+&nbsp;
+&nbsp;import com.github.mauricioaniche.ck.util.FileUtils;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;
+<b class="nc">&nbsp;public class Runner {</b>
+&nbsp;
+&nbsp;	public static void main(String[] args) throws IOException {
+&nbsp;
+<b class="nc">&nbsp;		if (args == null || args.length &lt; 1) {</b>
+<b class="nc">&nbsp;			System.out.println(&quot;Usage java -jar ck.jar &lt;path to project&gt; &lt;use Jars=true|false&gt; &lt;max files per partition, 0=automatic selection&gt; &lt;print variables and fields metrics? True|False&gt; &lt;path to save the output files&gt;&quot;);</b>
+<b class="nc">&nbsp;			System.exit(1);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		String path = args[0];</b>
+&nbsp;
+&nbsp;		// use jars?
+<b class="nc">&nbsp;		boolean useJars = false;</b>
+<b class="nc">&nbsp;		if(args.length &gt;= 2)</b>
+<b class="nc">&nbsp;			useJars = Boolean.parseBoolean(args[1]);</b>
+&nbsp;
+&nbsp;		// number of files per partition?
+<b class="nc">&nbsp;		int maxAtOnce = 0;</b>
+<b class="nc">&nbsp;		if(args.length &gt;= 3)</b>
+<b class="nc">&nbsp;			maxAtOnce = Integer.parseInt(args[2]);</b>
+&nbsp;
+&nbsp;		// variables and field results?
+<b class="nc">&nbsp;		boolean variablesAndFields = true;</b>
+<b class="nc">&nbsp;		if(args.length &gt;= 4)</b>
+<b class="nc">&nbsp;			variablesAndFields = Boolean.parseBoolean(args[3]);</b>
+&nbsp;		
+&nbsp;		// path where the output csv files will be exported
+<b class="nc">&nbsp;		String outputDir = &quot;&quot;;</b>
+<b class="nc">&nbsp;		if(args.length &gt;= 5)</b>
+<b class="nc">&nbsp;			outputDir = args[4];</b>
+&nbsp;
+&nbsp;    // load possible additional ignored directories
+&nbsp;    //noinspection ManualArrayToCollectionCopy
+<b class="nc">&nbsp;    for (int i = 5; i &lt; args.length; i++) {</b>
+<b class="nc">&nbsp;      FileUtils.IGNORED_DIRECTORIES.add(args[i]);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;		ResultWriter writer = new ResultWriter(outputDir + &quot;class.csv&quot;, outputDir + &quot;method.csv&quot;, outputDir + &quot;variable.csv&quot;, outputDir + &quot;field.csv&quot;, variablesAndFields);</b>
+&nbsp;		
+<b class="nc">&nbsp;		Map&lt;String, CKClassResult&gt; results = new HashMap&lt;&gt;();</b>
+&nbsp;		
+<b class="nc">&nbsp;		new CK(useJars, maxAtOnce, variablesAndFields).calculate(path, new CKNotifier() {</b>
+&nbsp;			@Override
+&nbsp;			public void notify(CKClassResult result) {
+&nbsp;				
+&nbsp;				// Store the metrics values from each component of the project in a HashMap
+<b class="nc">&nbsp;				results.put(result.getClassName(), result);</b>
+&nbsp;				
+&nbsp;			}
+&nbsp;
+&nbsp;			@Override
+&nbsp;			public void notifyError(String sourceFilePath, Exception e) {
+<b class="nc">&nbsp;				System.err.println(&quot;Error in &quot; + sourceFilePath);</b>
+<b class="nc">&nbsp;				e.printStackTrace(System.err);</b>
+&nbsp;			}
+&nbsp;		});
+&nbsp;		
+&nbsp;		// Write the metrics value of each component in the csv files
+<b class="nc">&nbsp;		for(Map.Entry&lt;String, CKClassResult&gt; entry : results.entrySet()){</b>
+<b class="nc">&nbsp;			writer.printResult(entry.getValue());</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;		
+<b class="nc">&nbsp;		writer.flushAndClose();</b>
+<b class="nc">&nbsp;		System.out.println(&quot;Metrics extracted!!!&quot;);</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

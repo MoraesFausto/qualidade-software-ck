@@ -1,0 +1,386 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ResultWriter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck</a>
+</div>
+
+<h1>Coverage Summary for Class: ResultWriter (com.github.mauricioaniche.ck)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ResultWriter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/122)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck;
+&nbsp;
+&nbsp;import org.apache.commons.csv.CSVFormat;
+&nbsp;import org.apache.commons.csv.CSVPrinter;
+&nbsp;
+&nbsp;import java.io.FileWriter;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;public class ResultWriter {
+&nbsp;
+<b class="nc">&nbsp;    private static final String[] CLASS_HEADER = {</b>
+&nbsp;            &quot;file&quot;,
+&nbsp;            &quot;class&quot;,
+&nbsp;            &quot;type&quot;,
+&nbsp;
+&nbsp;            /* OO Metrics */
+&nbsp;            &quot;cbo&quot;,
+&nbsp;            &quot;cboModified&quot;,
+&nbsp;            &quot;fanin&quot;,
+&nbsp;            &quot;fanout&quot;,
+&nbsp;            &quot;wmc&quot;,
+&nbsp;            &quot;dit&quot;,
+&nbsp;            &quot;noc&quot;,
+&nbsp;            &quot;rfc&quot;,
+&nbsp;            &quot;lcom&quot;,
+&nbsp;            &quot;lcom*&quot;,
+&nbsp;            &quot;tcc&quot;,
+&nbsp;            &quot;lcc&quot;,
+&nbsp;
+&nbsp;            /* Method Counting */
+&nbsp;            &quot;totalMethodsQty&quot;,
+&nbsp;            &quot;staticMethodsQty&quot;,
+&nbsp;            &quot;publicMethodsQty&quot;,
+&nbsp;            &quot;privateMethodsQty&quot;,
+&nbsp;            &quot;protectedMethodsQty&quot;,
+&nbsp;            &quot;defaultMethodsQty&quot;,
+&nbsp;            &quot;visibleMethodsQty&quot;,
+&nbsp;            &quot;abstractMethodsQty&quot;,
+&nbsp;            &quot;finalMethodsQty&quot;,
+&nbsp;            &quot;synchronizedMethodsQty&quot;,
+&nbsp;
+&nbsp;            /* Field Counting */
+&nbsp;            &quot;totalFieldsQty&quot;,
+&nbsp;            &quot;staticFieldsQty&quot;,
+&nbsp;            &quot;publicFieldsQty&quot;,
+&nbsp;            &quot;privateFieldsQty&quot;,
+&nbsp;            &quot;protectedFieldsQty&quot;,
+&nbsp;            &quot;defaultFieldsQty&quot;,
+&nbsp;            &quot;finalFieldsQty&quot;,
+&nbsp;            &quot;synchronizedFieldsQty&quot;,
+&nbsp;
+&nbsp;            /* Others */
+&nbsp;            &quot;nosi&quot;,
+&nbsp;            &quot;loc&quot;,
+&nbsp;            &quot;returnQty&quot;,
+&nbsp;            &quot;loopQty&quot;,
+&nbsp;            &quot;comparisonsQty&quot;,
+&nbsp;            &quot;tryCatchQty&quot;,
+&nbsp;            &quot;parenthesizedExpsQty&quot;,
+&nbsp;            &quot;stringLiteralsQty&quot;,
+&nbsp;            &quot;numbersQty&quot;,
+&nbsp;            &quot;assignmentsQty&quot;,
+&nbsp;            &quot;mathOperationsQty&quot;,
+&nbsp;            &quot;variablesQty&quot;,
+&nbsp;            &quot;maxNestedBlocksQty&quot;,
+&nbsp;            &quot;anonymousClassesQty&quot;,
+&nbsp;            &quot;innerClassesQty&quot;,
+&nbsp;            &quot;lambdasQty&quot;,
+&nbsp;            &quot;uniqueWordsQty&quot;,
+&nbsp;            &quot;modifiers&quot;,
+&nbsp;            &quot;logStatementsQty&quot;};
+<b class="nc">&nbsp;    private static final String[] METHOD_HEADER = { </b>
+&nbsp;            &quot;file&quot;, 
+&nbsp;            &quot;class&quot;, 
+&nbsp;            &quot;method&quot;, 
+&nbsp;            &quot;constructor&quot;, 
+&nbsp;            &quot;line&quot;, 
+&nbsp;            &quot;cbo&quot;, 
+&nbsp;            &quot;cboModified&quot;,
+&nbsp;            &quot;fanin&quot;,
+&nbsp;            &quot;fanout&quot;,
+&nbsp;            &quot;wmc&quot;, 
+&nbsp;            &quot;rfc&quot;, 
+&nbsp;            &quot;loc&quot;,
+&nbsp;            &quot;returnsQty&quot;, 
+&nbsp;            &quot;variablesQty&quot;, 
+&nbsp;            &quot;parametersQty&quot;, 
+&nbsp;            &quot;methodsInvokedQty&quot;, 
+&nbsp;            &quot;methodsInvokedLocalQty&quot;, 
+&nbsp;            &quot;methodsInvokedIndirectLocalQty&quot;, 
+&nbsp;            &quot;loopQty&quot;, 
+&nbsp;            &quot;comparisonsQty&quot;, 
+&nbsp;            &quot;tryCatchQty&quot;,
+&nbsp;            &quot;parenthesizedExpsQty&quot;, 
+&nbsp;            &quot;stringLiteralsQty&quot;, 
+&nbsp;            &quot;numbersQty&quot;, 
+&nbsp;            &quot;assignmentsQty&quot;, 
+&nbsp;            &quot;mathOperationsQty&quot;,
+&nbsp;            &quot;maxNestedBlocksQty&quot;, 
+&nbsp;            &quot;anonymousClassesQty&quot;, 
+&nbsp;            &quot;innerClassesQty&quot;, 
+&nbsp;            &quot;lambdasQty&quot;, 
+&nbsp;            &quot;uniqueWordsQty&quot;, 
+&nbsp;            &quot;modifiers&quot;, 
+&nbsp;            &quot;logStatementsQty&quot;, 
+&nbsp;            &quot;hasJavaDoc&quot; };
+&nbsp;                          
+<b class="nc">&nbsp;    private static final String[] VAR_FIELD_HEADER = { &quot;file&quot;, &quot;class&quot;, &quot;method&quot;, &quot;variable&quot;, &quot;usage&quot; };</b>
+&nbsp;    private final boolean variablesAndFields;
+&nbsp;
+&nbsp;    private CSVPrinter classPrinter;
+&nbsp;    private CSVPrinter methodPrinter;
+&nbsp;    private CSVPrinter variablePrinter;
+&nbsp;    private CSVPrinter fieldPrinter;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialise a new ResultWriter that writes to the specified files. Begins by
+&nbsp;     * writing CSV headers to each file.
+&nbsp;     * 
+&nbsp;     * @param classFile    Output file for class metrics
+&nbsp;     * @param methodFile   Output file for method metrics
+&nbsp;     * @param variableFile Output file for variable metrics
+&nbsp;     * @param fieldFile    Output file for field metrics
+&nbsp;     * @throws IOException If headers cannot be written
+&nbsp;     */
+<b class="nc">&nbsp;    public ResultWriter(String classFile, String methodFile, String variableFile, String fieldFile, boolean variablesAndFields) throws IOException {</b>
+<b class="nc">&nbsp;        FileWriter classOut = new FileWriter(classFile);</b>
+<b class="nc">&nbsp;        this.classPrinter = new CSVPrinter(classOut, CSVFormat.DEFAULT.withHeader(CLASS_HEADER));</b>
+<b class="nc">&nbsp;        FileWriter methodOut = new FileWriter(methodFile);</b>
+<b class="nc">&nbsp;        this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));</b>
+&nbsp;
+<b class="nc">&nbsp;        this.variablesAndFields = variablesAndFields;</b>
+<b class="nc">&nbsp;        if(variablesAndFields) {</b>
+<b class="nc">&nbsp;            FileWriter variableOut = new FileWriter(variableFile);</b>
+<b class="nc">&nbsp;            this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));</b>
+<b class="nc">&nbsp;            FileWriter fieldOut = new FileWriter(fieldFile);</b>
+<b class="nc">&nbsp;            this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Print results for a single class and its methods and fields to the
+&nbsp;     * appropriate CSVPrinters.
+&nbsp;     * 
+&nbsp;     * @param result The CKClassResult
+&nbsp;     * @throws IOException If output files cannot be written to
+&nbsp;     */
+&nbsp;    public void printResult(CKClassResult result) throws IOException {
+&nbsp;
+<b class="nc">&nbsp;        this.classPrinter.printRecord(</b>
+<b class="nc">&nbsp;                result.getFile(),</b>
+<b class="nc">&nbsp;                result.getClassName(),</b>
+<b class="nc">&nbsp;                result.getType(),</b>
+&nbsp;
+&nbsp;                /* OO Metrics */
+<b class="nc">&nbsp;                result.getCbo(),</b>
+<b class="nc">&nbsp;                result.getCboModified(),</b>
+<b class="nc">&nbsp;                result.getFanin(),</b>
+<b class="nc">&nbsp;                result.getFanout(),</b>
+<b class="nc">&nbsp;                result.getWmc(),</b>
+<b class="nc">&nbsp;                result.getDit(),</b>
+<b class="nc">&nbsp;                result.getNoc(),</b>
+<b class="nc">&nbsp;                result.getRfc(),</b>
+<b class="nc">&nbsp;                result.getLcom(),</b>
+<b class="nc">&nbsp;                result.getLcomNormalized(),</b>
+<b class="nc">&nbsp;                result.getTightClassCohesion(),</b>
+<b class="nc">&nbsp;                result.getLooseClassCohesion(),</b>
+&nbsp;
+&nbsp;                /* Method Counting */
+<b class="nc">&nbsp;                result.getNumberOfMethods(),</b>
+<b class="nc">&nbsp;                result.getNumberOfStaticMethods(),</b>
+<b class="nc">&nbsp;                result.getNumberOfPublicMethods(),</b>
+<b class="nc">&nbsp;                result.getNumberOfPrivateMethods(),</b>
+<b class="nc">&nbsp;                result.getNumberOfProtectedMethods(),</b>
+<b class="nc">&nbsp;                result.getNumberOfDefaultMethods(),</b>
+<b class="nc">&nbsp;                result.getVisibleMethods().size(),</b>
+<b class="nc">&nbsp;                result.getNumberOfAbstractMethods(),</b>
+<b class="nc">&nbsp;                result.getNumberOfFinalMethods(),</b>
+<b class="nc">&nbsp;                result.getNumberOfSynchronizedMethods(),</b>
+&nbsp;
+&nbsp;                /* Field Counting */
+<b class="nc">&nbsp;                result.getNumberOfFields(),</b>
+<b class="nc">&nbsp;                result.getNumberOfStaticFields(),</b>
+<b class="nc">&nbsp;                result.getNumberOfPublicFields(),</b>
+<b class="nc">&nbsp;                result.getNumberOfPrivateFields(),</b>
+<b class="nc">&nbsp;                result.getNumberOfProtectedFields(),</b>
+<b class="nc">&nbsp;                result.getNumberOfDefaultFields(),</b>
+<b class="nc">&nbsp;                result.getNumberOfFinalFields(),</b>
+<b class="nc">&nbsp;                result.getNumberOfSynchronizedFields(),</b>
+&nbsp;
+&nbsp;                /* Others */
+<b class="nc">&nbsp;                result.getNosi(),</b>
+<b class="nc">&nbsp;                result.getLoc(),</b>
+<b class="nc">&nbsp;                result.getReturnQty(),</b>
+<b class="nc">&nbsp;                result.getLoopQty(),</b>
+<b class="nc">&nbsp;                result.getComparisonsQty(),</b>
+<b class="nc">&nbsp;                result.getTryCatchQty(),</b>
+<b class="nc">&nbsp;                result.getParenthesizedExpsQty(),</b>
+<b class="nc">&nbsp;                result.getStringLiteralsQty(),</b>
+<b class="nc">&nbsp;                result.getNumbersQty(),</b>
+<b class="nc">&nbsp;                result.getAssignmentsQty(),</b>
+<b class="nc">&nbsp;                result.getMathOperationsQty(),</b>
+<b class="nc">&nbsp;                result.getVariablesQty(),</b>
+<b class="nc">&nbsp;                result.getMaxNestedBlocks(),</b>
+<b class="nc">&nbsp;                result.getAnonymousClassesQty(),</b>
+<b class="nc">&nbsp;                result.getInnerClassesQty(),</b>
+<b class="nc">&nbsp;                result.getLambdasQty(),</b>
+<b class="nc">&nbsp;                result.getUniqueWordsQty(),</b>
+<b class="nc">&nbsp;                result.getModifiers(),</b>
+<b class="nc">&nbsp;                result.getNumberOfLogStatements());</b>
+&nbsp;
+<b class="nc">&nbsp;        for (CKMethodResult method : result.getMethods()) {</b>
+<b class="nc">&nbsp;            this.methodPrinter.printRecord(</b>
+<b class="nc">&nbsp;                    result.getFile(), </b>
+<b class="nc">&nbsp;                    result.getClassName(), </b>
+<b class="nc">&nbsp;                    method.getMethodName(),</b>
+<b class="nc">&nbsp;                    method.isConstructor(),</b>
+<b class="nc">&nbsp;                    method.getStartLine(), </b>
+<b class="nc">&nbsp;                    method.getCbo(), </b>
+<b class="nc">&nbsp;                    method.getCboModified(), </b>
+<b class="nc">&nbsp;                    method.getFanin(), </b>
+<b class="nc">&nbsp;                    method.getFanout(), </b>
+<b class="nc">&nbsp;                    method.getWmc(), </b>
+<b class="nc">&nbsp;                    method.getRfc(), </b>
+<b class="nc">&nbsp;                    method.getLoc(),</b>
+<b class="nc">&nbsp;                    method.getReturnQty(), </b>
+<b class="nc">&nbsp;                    method.getVariablesQty(), </b>
+<b class="nc">&nbsp;                    method.getParametersQty(),</b>
+<b class="nc">&nbsp;                    method.getMethodInvocations().size(), </b>
+<b class="nc">&nbsp;                    method.getMethodInvocationsLocal().size(), </b>
+<b class="nc">&nbsp;                    method.getMethodInvocationsIndirectLocal().size(),</b>
+<b class="nc">&nbsp;                    method.getLoopQty(), </b>
+<b class="nc">&nbsp;                    method.getComparisonsQty(), </b>
+<b class="nc">&nbsp;                    method.getTryCatchQty(),</b>
+<b class="nc">&nbsp;                    method.getParenthesizedExpsQty(), </b>
+<b class="nc">&nbsp;                    method.getStringLiteralsQty(), </b>
+<b class="nc">&nbsp;                    method.getNumbersQty(),</b>
+<b class="nc">&nbsp;                    method.getAssignmentsQty(), </b>
+<b class="nc">&nbsp;                    method.getMathOperationsQty(), </b>
+<b class="nc">&nbsp;                    method.getMaxNestedBlocks(),</b>
+<b class="nc">&nbsp;                    method.getAnonymousClassesQty(), </b>
+<b class="nc">&nbsp;                    method.getInnerClassesQty(), </b>
+<b class="nc">&nbsp;                    method.getLambdasQty(),</b>
+<b class="nc">&nbsp;                    method.getUniqueWordsQty(), </b>
+<b class="nc">&nbsp;                    method.getModifiers(), </b>
+<b class="nc">&nbsp;                    method.getLogStatementsQty(), </b>
+<b class="nc">&nbsp;                    method.getHasJavadoc());</b>
+&nbsp;
+<b class="nc">&nbsp;            if(variablesAndFields) {</b>
+<b class="nc">&nbsp;                for (Map.Entry&lt;String, Integer&gt; entry : method.getVariablesUsage().entrySet()) {</b>
+<b class="nc">&nbsp;                    this.variablePrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),</b>
+<b class="nc">&nbsp;                            entry.getKey(), entry.getValue());</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;
+<b class="nc">&nbsp;                for (Map.Entry&lt;String, Integer&gt; entry : method.getFieldUsage().entrySet()) {</b>
+<b class="nc">&nbsp;                    this.fieldPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),</b>
+<b class="nc">&nbsp;                            entry.getKey(), entry.getValue());</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Flush and close resources that were opened to write results. This method
+&nbsp;     * should be called after all CKClassResults have been calculated and printed.
+&nbsp;     * 
+&nbsp;     * @throws IOException If the resources cannot be closed
+&nbsp;     */
+&nbsp;    public void flushAndClose() throws IOException {
+<b class="nc">&nbsp;        this.classPrinter.flush();</b>
+<b class="nc">&nbsp;        this.classPrinter.close();</b>
+<b class="nc">&nbsp;        this.methodPrinter.flush();</b>
+<b class="nc">&nbsp;        this.methodPrinter.close();</b>
+<b class="nc">&nbsp;        if(variablesAndFields) {</b>
+<b class="nc">&nbsp;            this.variablePrinter.flush();</b>
+<b class="nc">&nbsp;            this.variablePrinter.close();</b>
+<b class="nc">&nbsp;            this.fieldPrinter.flush();</b>
+<b class="nc">&nbsp;            this.fieldPrinter.close();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

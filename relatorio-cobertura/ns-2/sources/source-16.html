@@ -1,0 +1,156 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > NumberOfLogStatements</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.metric</a>
+</div>
+
+<h1>Coverage Summary for Class: NumberOfLogStatements (com.github.mauricioaniche.ck.metric)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NumberOfLogStatements</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.metric;
+&nbsp;
+&nbsp;import com.github.mauricioaniche.ck.CKClassResult;
+&nbsp;import com.github.mauricioaniche.ck.CKMethodResult;
+&nbsp;import org.eclipse.jdt.core.dom.ASTNode;
+&nbsp;import org.eclipse.jdt.core.dom.ExpressionStatement;
+&nbsp;import org.eclipse.jdt.core.dom.MethodInvocation;
+&nbsp;
+<b class="fc">&nbsp;public class NumberOfLogStatements implements CKASTVisitor, MethodLevelMetric, ClassLevelMetric {</b>
+&nbsp;
+<b class="fc">&nbsp;    private int qty = 0;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks whether an expression represents a log statement based on REGEX.
+&nbsp;     * &lt;p&gt;
+&nbsp;     * Pattern based on log4j API. It also supports builder pattern (see http://logging.apache.org/log4j/2.x/manual/logbuilder.html)
+&nbsp;     * &lt;p&gt;
+&nbsp;     * Limitations:
+&nbsp;     * 1. It does not check for EventLogs as in http://logging.apache.org/log4j/2.x/manual/eventlogging.html
+&nbsp;     * 2. It does not support custom log levels as in http://logging.apache.org/log4j/2.x/manual/customloglevels.html
+&nbsp;     *
+&nbsp;     * @param line The string representation of the given statement
+&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if the informed line matches a log statement
+&nbsp;     */
+&nbsp;    public static boolean isLogStatement(String line) {
+<b class="fc">&nbsp;        line = line.toLowerCase().trim();</b>
+<b class="fc">&nbsp;        return line.matches(&quot;.*\\.(at)?(info|warn|debug|error|trace)\\(.*&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visit(MethodInvocation node) {
+<b class="fc">&nbsp;        ASTNode parentNode = node.getParent();</b>
+<b class="fc">&nbsp;        if (parentNode instanceof ExpressionStatement) {</b>
+<b class="fc">&nbsp;            ExpressionStatement expr = (ExpressionStatement) parentNode;</b>
+<b class="fc">&nbsp;            String rawExpr = expr.toString();</b>
+<b class="fc">&nbsp;            if (NumberOfLogStatements.isLogStatement(rawExpr)) {</b>
+<b class="fc">&nbsp;                qty++;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void setResult(CKMethodResult result) {
+<b class="fc">&nbsp;        result.setLogStatementsQty(qty);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void setResult(CKClassResult result) {
+<b class="fc">&nbsp;        result.setLogStatementsQty(qty);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

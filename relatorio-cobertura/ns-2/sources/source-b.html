@@ -1,0 +1,179 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > MethodInvocationsLocal</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.metric</a>
+</div>
+
+<h1>Coverage Summary for Class: MethodInvocationsLocal (com.github.mauricioaniche.ck.metric)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MethodInvocationsLocal</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (35/35)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.metric;
+&nbsp;
+&nbsp;import com.github.mauricioaniche.ck.CKClassResult;
+&nbsp;import com.github.mauricioaniche.ck.CKMethodResult;
+&nbsp;import java.util.*;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;//we ignore invocations in the super class, because they are always outside the current class and can never return
+&nbsp;@RunAfter(metrics={RFC.class, MethodLevelFieldUsageCount.class})
+<b class="fc">&nbsp;public class MethodInvocationsLocal implements CKASTVisitor, ClassLevelMetric {</b>
+&nbsp;    //Recursively extract all method invocations starting with the given method
+&nbsp;    //Explored contains all previously explored invocations
+&nbsp;    //Invocations contains all direct method invocations of interest
+&nbsp;    //The algorithm is a depth first search
+&nbsp;    private Map&lt;String, Set&lt;String&gt;&gt; invocations(String invokedMethod, Map&lt;String, Set&lt;String&gt;&gt; explored, HashMap&lt;String, Set&lt;String&gt;&gt; invocations){
+&nbsp;        //only explore local method invocations that were not previously explored
+<b class="fc">&nbsp;        Set&lt;String&gt; exploredKeys = explored.keySet();</b>
+<b class="fc">&nbsp;        Set&lt;String&gt; nextInvocations = invocations.get(invokedMethod).stream()</b>
+<b class="fc">&nbsp;                .filter(invoked -&gt; !exploredKeys.contains(invoked) &amp;&amp; !invoked.equals(invokedMethod))</b>
+<b class="fc">&nbsp;                .collect(Collectors.toSet());</b>
+<b class="fc">&nbsp;        if(nextInvocations.size() &gt; 0){</b>
+<b class="fc">&nbsp;            explored.put(invokedMethod, nextInvocations);</b>
+&nbsp;
+<b class="fc">&nbsp;            for (String nextInvocation : nextInvocations){</b>
+<b class="fc">&nbsp;                explored = invocations(nextInvocation, explored, invocations);</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        //Stops when all invocations are explored: there are no more invocations to be explored
+<b class="fc">&nbsp;        return explored;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Generate an indirect method invocations map
+&nbsp;    //Method contains all methods of interest
+&nbsp;    //Invocations contains all indirect method invocations of interest with the calling method
+&nbsp;    private HashMap&lt;String, Map&lt;String, Set&lt;String&gt;&gt;&gt; invocationsIndirect(Set&lt;CKMethodResult&gt; methods, HashMap&lt;String, Set&lt;String&gt;&gt; methodInvocationsLocal){
+<b class="fc">&nbsp;        HashMap&lt;String, Map&lt;String, Set&lt;String&gt;&gt;&gt; methodInvocationsIndirectLocal = new HashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;        //extract all indirect local invocations for all methods in the current class
+<b class="fc">&nbsp;        for (CKMethodResult method : methods){</b>
+&nbsp;            //extract all local invocations for the current method
+<b class="fc">&nbsp;            Map&lt;String, Set&lt;String&gt;&gt; localInvocations =  invocations(method.getQualifiedMethodName(), new HashMap(), methodInvocationsLocal);</b>
+<b class="fc">&nbsp;            methodInvocationsIndirectLocal.put(method.getQualifiedMethodName(), localInvocations);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return methodInvocationsIndirectLocal;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Extract all local(inner-class) method invocations and save them in a HashMap
+&nbsp;    private HashMap&lt;String, Set&lt;String&gt;&gt; extractLocalInvocations(Set&lt;CKMethodResult&gt; methods){
+<b class="fc">&nbsp;        HashMap&lt;String, Set&lt;String&gt;&gt; methodInvocationsLocal = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        Set&lt;String&gt; methodNames = methods.stream().map(CKMethodResult::getQualifiedMethodName).collect(Collectors.toSet());</b>
+<b class="fc">&nbsp;        for (CKMethodResult method : methods){</b>
+<b class="fc">&nbsp;            Set&lt;String&gt; invokedLocal =  method.getMethodInvocations().stream()</b>
+<b class="fc">&nbsp;                    .filter(methodNames::contains)</b>
+<b class="fc">&nbsp;                    .collect(Collectors.toSet());</b>
+<b class="fc">&nbsp;            methodInvocationsLocal.put(method.getQualifiedMethodName(), invokedLocal);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return methodInvocationsLocal;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setResult(CKClassResult result) {
+&nbsp;        //extract all direct local invocations for all methods in the current class
+<b class="fc">&nbsp;        Set&lt;CKMethodResult&gt; methods = result.getMethods();</b>
+<b class="fc">&nbsp;        HashMap&lt;String, Set&lt;String&gt;&gt; methodInvocationsLocal = extractLocalInvocations(methods);</b>
+<b class="fc">&nbsp;        for (CKMethodResult method : methods){</b>
+<b class="fc">&nbsp;            method.setMethodInvocationLocal(methodInvocationsLocal.get(method.getQualifiedMethodName()));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        HashMap&lt;String, Map&lt;String, Set&lt;String&gt;&gt;&gt; methodInvocationsIndirectLocal = invocationsIndirect(methods, methodInvocationsLocal);</b>
+<b class="fc">&nbsp;        for (CKMethodResult method : methods){</b>
+<b class="fc">&nbsp;            method.setMethodInvocationsIndirectLocal(methodInvocationsIndirectLocal.get(method.getQualifiedMethodName()));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

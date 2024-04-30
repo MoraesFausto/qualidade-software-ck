@@ -1,0 +1,151 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ClassLevelWordCounter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.metric</a>
+</div>
+
+<h1>Coverage Summary for Class: ClassLevelWordCounter (com.github.mauricioaniche.ck.metric)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClassLevelWordCounter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.metric;
+&nbsp;
+&nbsp;import com.github.mauricioaniche.ck.CKClassResult;
+&nbsp;import com.github.mauricioaniche.ck.util.WordCounter;
+&nbsp;import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
+&nbsp;import org.eclipse.jdt.core.dom.EnumDeclaration;
+&nbsp;import org.eclipse.jdt.core.dom.TypeDeclaration;
+&nbsp;
+&nbsp;import static com.github.mauricioaniche.ck.util.WordCounter.removeSpacesAndIdentation;
+&nbsp;
+<b class="fc">&nbsp;public class ClassLevelWordCounter implements CKASTVisitor, ClassLevelMetric {</b>
+&nbsp;
+&nbsp;	private String classSourceCode;
+&nbsp;
+&nbsp;	public void visit(TypeDeclaration node) {
+&nbsp;
+<b class="fc">&nbsp;		String typeSourceCode = node.toString();</b>
+<b class="fc">&nbsp;		setOrRemoveSourceCode(typeSourceCode);</b>
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(AnonymousClassDeclaration node) {
+<b class="fc">&nbsp;		setOrRemoveSourceCode(node.toString());</b>
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(EnumDeclaration node) {
+<b class="fc">&nbsp;		setOrRemoveSourceCode(node.toString());</b>
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	private void setOrRemoveSourceCode(String typeSourceCode) {
+<b class="fc">&nbsp;		if (classSourceCode == null) {</b>
+<b class="fc">&nbsp;			classSourceCode = removeSpacesAndIdentation(typeSourceCode);</b>
+&nbsp;		} else {
+<b class="fc">&nbsp;			String otherType = removeSpacesAndIdentation(typeSourceCode);</b>
+<b class="fc">&nbsp;			classSourceCode = removeSpacesAndIdentation(classSourceCode.replace(otherType, &quot;&quot;));</b>
+&nbsp;
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void setResult(CKClassResult result) {
+<b class="fc">&nbsp;		int qtyOfUniqueWords = WordCounter.wordsIn(classSourceCode).size();</b>
+<b class="fc">&nbsp;		result.setUniqueWordsQty(qtyOfUniqueWords);</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

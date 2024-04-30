@@ -1,0 +1,488 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CKMethodResult</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck</a>
+</div>
+
+<h1>Coverage Summary for Class: CKMethodResult (com.github.mauricioaniche.ck)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CKMethodResult</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,2%
+  </span>
+  <span class="absValue">
+    (70/72)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90,1%
+  </span>
+  <span class="absValue">
+    (91/101)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck;
+&nbsp;
+&nbsp;import org.eclipse.jdt.core.dom.Modifier;
+&nbsp;
+&nbsp;import com.github.mauricioaniche.ck.metric.CouplingExtras;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;public class CKMethodResult {
+&nbsp;	private int cbo;
+<b class="fc">&nbsp;	private int cboModified = -1;</b>
+<b class="fc">&nbsp;	private int fanin = -1;</b>
+<b class="fc">&nbsp;	private int fanout = -1;</b>
+&nbsp;	private int rfc;
+&nbsp;	private int wmc;
+&nbsp;	private String methodName;
+&nbsp;	private String qualifiedMethodName;
+&nbsp;	private boolean isVisible;
+&nbsp;	private int parametersQty;
+&nbsp;	private int returnQty;
+&nbsp;	private int loc;
+&nbsp;	private int variablesQty;
+&nbsp;	private Map&lt;String, Integer&gt; variablesUsage;
+&nbsp;	private int startLine;
+&nbsp;	private int loopQty;
+&nbsp;	private int comparisonsQty;
+&nbsp;	private int tryCatchQty;
+&nbsp;	private int parenthesizedExpsQty;
+&nbsp;	private int stringLiteralsQty;
+&nbsp;	private int numbersQty;
+&nbsp;	private int assignmentsQty;
+&nbsp;	private int mathOperationsQty;
+&nbsp;	private int maxNestedBlocks;
+&nbsp;	private int anonymousClassesQty;
+&nbsp;	private int innerClassesQty;
+&nbsp;	private int lambdasQty;
+&nbsp;	private int uniqueWordsQty;
+&nbsp;	//all local field accesses
+&nbsp;	private Map&lt;String, Integer&gt; fieldUsage;
+&nbsp;	private boolean isConstructor;
+&nbsp;	private int modifiers;
+&nbsp;	private int logStatementsQty;
+&nbsp;	private boolean hasJavadoc;
+&nbsp;
+&nbsp;	//All direct invocations of methods
+&nbsp;	private Set&lt;String&gt; methodInvocations;
+&nbsp;	//All direct invocations of methods of the same class
+&nbsp;	private Set&lt;String&gt; methodInvocationsLocal;
+&nbsp;	//All indirect invocations of methods of the same class
+&nbsp;	private Map&lt;String, Set&lt;String&gt;&gt; methodInvocationsIndirectLocal;
+&nbsp;
+<b class="fc">&nbsp;	public CKMethodResult(String methodName, String qualifiedMethodName, boolean isConstructor, int modifiers) {</b>
+<b class="fc">&nbsp;		this.methodName = methodName;</b>
+<b class="fc">&nbsp;		this.qualifiedMethodName = qualifiedMethodName;</b>
+<b class="fc">&nbsp;		this.isConstructor = isConstructor;</b>
+<b class="fc">&nbsp;		this.modifiers = modifiers;</b>
+<b class="fc">&nbsp;		this.isVisible = !Modifier.isPrivate(modifiers);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * public/static/private and other org.eclipse.jdt.core.dom.Modifier modifiers
+&nbsp;	 *
+&nbsp;	 * @see org.eclipse.jdt.core.dom.Modifier to decode int
+&nbsp;	 * @return
+&nbsp;	 */
+&nbsp;	public int getModifiers() {
+<b class="fc">&nbsp;		return modifiers;</b>
+&nbsp;	}
+&nbsp;
+<b class="fc">&nbsp;	public boolean getIsVisible(){ return isVisible;}</b>
+&nbsp;
+&nbsp;	public void setCbo(int cbo) {
+<b class="fc">&nbsp;		this.cbo = cbo;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void setCboModified(int cboModified) {
+<b class="fc">&nbsp;		this.cboModified = cboModified;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public int getCboModified() {
+<b class="fc">&nbsp;		if(this.cboModified == -1){</b>
+<b class="fc">&nbsp;			CouplingExtras extras = CouplingExtras.getInstance();</b>
+<b class="fc">&nbsp;			this.setCboModified(extras.getValueCBOMethod(this.qualifiedMethodName));</b>
+&nbsp;		}
+<b class="fc">&nbsp;		return cboModified;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void setFanin(int fanin) {
+<b class="fc">&nbsp;		this.fanin = fanin;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public int getFanin() {
+<b class="fc">&nbsp;		if(this.fanin == -1){</b>
+<b class="fc">&nbsp;			CouplingExtras extras = CouplingExtras.getInstance();</b>
+<b class="fc">&nbsp;			this.setFanin(extras.getValueFanInMethod(this.qualifiedMethodName));</b>
+&nbsp;		}
+<b class="fc">&nbsp;		return fanin;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void setFanout(int fanout) {
+<b class="fc">&nbsp;		this.fanout = fanout;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public int getFanout() {
+<b class="fc">&nbsp;		if(this.fanout == -1){</b>
+<b class="fc">&nbsp;			CouplingExtras extras = CouplingExtras.getInstance();</b>
+<b class="fc">&nbsp;			this.setFanout(extras.getValueFanOutMethod(this.qualifiedMethodName));</b>
+&nbsp;		}
+<b class="fc">&nbsp;		return fanout;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setRfc(int rfc) {
+<b class="fc">&nbsp;		this.rfc = rfc;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setWmc(int wmc) {
+<b class="fc">&nbsp;		this.wmc = wmc;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setParametersQty(int parametersQty) {
+<b class="fc">&nbsp;		this.parametersQty = parametersQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getCbo() {
+<b class="fc">&nbsp;		return cbo;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getRfc() {
+<b class="fc">&nbsp;		return rfc;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getWmc() {
+<b class="fc">&nbsp;		return wmc;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getMethodName() {
+<b class="fc">&nbsp;		return methodName;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getQualifiedMethodName() {
+<b class="fc">&nbsp;		return qualifiedMethodName;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public String toString() {
+<b class="nc">&nbsp;		return &quot;CKMethodResult{&quot; +</b>
+&nbsp;				&quot;cbo=&quot; + cbo +
+&nbsp;				&quot;, rfc=&quot; + rfc +
+&nbsp;				&quot;, wmc=&quot; + wmc +
+&nbsp;				&quot;, methodName=&#39;&quot; + methodName + &#39;\&#39;&#39; +
+&nbsp;				&#39;}&#39;;
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setReturnQty(int returnQty) {
+<b class="fc">&nbsp;		this.returnQty = returnQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setLoc(int loc) {
+<b class="fc">&nbsp;		this.loc = loc;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setVariablesQty(int variablesQty) {
+<b class="fc">&nbsp;		this.variablesQty = variablesQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getLoc() {
+<b class="fc">&nbsp;		return loc;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getParametersQty() {
+<b class="fc">&nbsp;		return parametersQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getVariablesQty() {
+<b class="fc">&nbsp;		return variablesQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getReturnQty() {
+<b class="fc">&nbsp;		return returnQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setVariablesUsage(Map&lt;String, Integer&gt; variablesUsage) {
+<b class="fc">&nbsp;		this.variablesUsage = variablesUsage;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Map&lt;String, Integer&gt; getVariablesUsage() {
+<b class="fc">&nbsp;		if(this.variablesUsage==null)</b>
+<b class="nc">&nbsp;			this.variablesUsage = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;		return variablesUsage;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setStartLine(int startLine) {
+<b class="fc">&nbsp;		this.startLine = startLine;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getStartLine() {
+<b class="fc">&nbsp;		return startLine;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setLoopQty(int loopQty) {
+<b class="fc">&nbsp;		this.loopQty = loopQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getLoopQty() {
+<b class="fc">&nbsp;		return loopQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setComparisonsQty(int comparisonsQty) {
+<b class="fc">&nbsp;		this.comparisonsQty = comparisonsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getComparisonsQty() {
+<b class="fc">&nbsp;		return comparisonsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setTryCatchQty(int tryCatchQty) {
+<b class="fc">&nbsp;		this.tryCatchQty = tryCatchQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getTryCatchQty() {
+<b class="fc">&nbsp;		return tryCatchQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setParenthesizedExpsQty(int parenthesizedExpsQty) {
+<b class="fc">&nbsp;		this.parenthesizedExpsQty = parenthesizedExpsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getParenthesizedExpsQty() {
+<b class="fc">&nbsp;		return parenthesizedExpsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setStringLiteralsQty(int stringsQty) {
+<b class="fc">&nbsp;		this.stringLiteralsQty = stringsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getStringLiteralsQty() {
+<b class="fc">&nbsp;		return stringLiteralsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setNumbersQty(int numbersQty) {
+<b class="fc">&nbsp;		this.numbersQty = numbersQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setAssignmentsQty(int assignmentsQty) {
+<b class="fc">&nbsp;		this.assignmentsQty = assignmentsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getAssignmentsQty() {
+<b class="fc">&nbsp;		return assignmentsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setMathOperationsQty(int mathOperationsQty) {
+<b class="fc">&nbsp;		this.mathOperationsQty = mathOperationsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getMathOperationsQty() {
+<b class="fc">&nbsp;		return mathOperationsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setMaxNestedBlocks(int maxNestedBlocks) {
+<b class="fc">&nbsp;		this.maxNestedBlocks = maxNestedBlocks;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getMaxNestedBlocks() {
+<b class="fc">&nbsp;		return maxNestedBlocks;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getNumbersQty() {
+<b class="fc">&nbsp;		return numbersQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setAnonymousClassesQty(int anonymousClassesQty) {
+<b class="fc">&nbsp;		this.anonymousClassesQty = anonymousClassesQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getAnonymousClassesQty() {
+<b class="fc">&nbsp;		return anonymousClassesQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setInnerClassesQty(int innerClassesQty) {
+<b class="fc">&nbsp;		this.innerClassesQty = innerClassesQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getInnerClassesQty() {
+<b class="fc">&nbsp;		return innerClassesQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setLambdasQty(int lambdasQty) {
+<b class="fc">&nbsp;		this.lambdasQty = lambdasQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getLambdasQty() {
+<b class="fc">&nbsp;		return lambdasQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setUniqueWordsQty(int uniqueWordsQty) {
+<b class="fc">&nbsp;		this.uniqueWordsQty = uniqueWordsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getUniqueWordsQty() {
+<b class="fc">&nbsp;		return uniqueWordsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setFieldUsage(Map&lt;String, Integer&gt; fieldUsage) {
+<b class="fc">&nbsp;		this.fieldUsage = fieldUsage;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Map&lt;String, Integer&gt; getFieldUsage() {
+<b class="fc">&nbsp;		if(this.fieldUsage==null)</b>
+<b class="nc">&nbsp;			fieldUsage = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;		return fieldUsage;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Set&lt;String&gt; getFieldsAccessed() {
+<b class="fc">&nbsp;		if(this.fieldUsage==null)</b>
+<b class="nc">&nbsp;			fieldUsage = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;		return fieldUsage.keySet();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public boolean isConstructor() {
+<b class="fc">&nbsp;		return isConstructor;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getLogStatementsQty() {
+<b class="fc">&nbsp;		return logStatementsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setLogStatementsQty(int logStatementsQty) {
+<b class="fc">&nbsp;		this.logStatementsQty = logStatementsQty;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setHasJavadoc(boolean hasJavadoc) {
+<b class="fc">&nbsp;		this.hasJavadoc = hasJavadoc;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public boolean getHasJavadoc() {
+<b class="fc">&nbsp;		return hasJavadoc;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setMethodInvocations(Set&lt;String&gt; methodInvocations) {
+<b class="fc">&nbsp;		this.methodInvocations = methodInvocations;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Set&lt;String&gt; getMethodInvocations() {
+<b class="fc">&nbsp;		if(methodInvocations==null)</b>
+<b class="nc">&nbsp;			methodInvocations = new HashSet&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;		return methodInvocations;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setMethodInvocationLocal(Set&lt;String&gt; methodInvocationsLocal) {
+<b class="fc">&nbsp;		this.methodInvocationsLocal = methodInvocationsLocal;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Set&lt;String&gt; getMethodInvocationsLocal() {
+<b class="fc">&nbsp;		return methodInvocationsLocal;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setMethodInvocationsIndirectLocal(Map&lt;String, Set&lt;String&gt;&gt; methodInvocationsIndirect) {
+<b class="fc">&nbsp;		this.methodInvocationsIndirectLocal = methodInvocationsIndirect;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Map&lt;String, Set&lt;String&gt;&gt; getMethodInvocationsIndirectLocal() {
+<b class="fc">&nbsp;		return methodInvocationsIndirectLocal;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public boolean equals(Object o) {
+<b class="nc">&nbsp;		if (this == o) return true;</b>
+<b class="nc">&nbsp;		if (o == null || getClass() != o.getClass()) return false;</b>
+<b class="nc">&nbsp;		CKMethodResult that = (CKMethodResult) o;</b>
+<b class="nc">&nbsp;		return startLine == that.startLine &amp;&amp;</b>
+<b class="nc">&nbsp;				methodName.equals(that.methodName);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public int hashCode() {
+<b class="fc">&nbsp;		return Objects.hash(methodName, startLine);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

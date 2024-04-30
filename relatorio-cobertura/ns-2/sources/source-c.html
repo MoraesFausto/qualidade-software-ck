@@ -1,0 +1,182 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > MethodLevelFieldUsageCount</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.metric</a>
+</div>
+
+<h1>Coverage Summary for Class: MethodLevelFieldUsageCount (com.github.mauricioaniche.ck.metric)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MethodLevelFieldUsageCount</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (24/24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.metric;
+&nbsp;
+&nbsp;import com.github.mauricioaniche.ck.CKMethodResult;
+&nbsp;import org.eclipse.jdt.core.dom.*;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetric, VariableOrFieldMetric {
+&nbsp;	private Set&lt;String&gt; declaredFields;
+&nbsp;	private Map&lt;String, Integer&gt; occurrences;
+&nbsp;
+&nbsp;	private Set&lt;String&gt; variables;
+&nbsp;	private boolean isFieldAccess;
+&nbsp;	private boolean isQualifiedName;
+&nbsp;
+<b class="fc">&nbsp;	public MethodLevelFieldUsageCount() {</b>
+<b class="fc">&nbsp;		declaredFields = new HashSet&lt;&gt;();</b>
+<b class="fc">&nbsp;		this.occurrences = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;		this.variables = new HashSet&lt;&gt;();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(MethodDeclaration node) {
+<b class="fc">&nbsp;		IMethodBinding binding = node.resolveBinding();</b>
+<b class="fc">&nbsp;		if(binding==null)</b>
+&nbsp;			return;
+&nbsp;
+<b class="fc">&nbsp;		IVariableBinding[] fields = binding.getDeclaringClass().getDeclaredFields();</b>
+&nbsp;
+<b class="fc">&nbsp;		for (IVariableBinding field : fields) {</b>
+<b class="fc">&nbsp;			declaredFields.add(field.getName());</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(VariableDeclarationFragment node) {
+<b class="fc">&nbsp;		String var = node.getName().toString();</b>
+<b class="fc">&nbsp;		variables.add(var);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(FieldAccess node) {
+<b class="fc">&nbsp;		isFieldAccess = true;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void endVisit(FieldAccess node) {
+<b class="fc">&nbsp;		isFieldAccess = false;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(QualifiedName node){
+<b class="fc">&nbsp;		isQualifiedName = true;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void endVisit(QualifiedName node) {
+<b class="fc">&nbsp;		isQualifiedName = false;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private void plusOne(String var) {
+<b class="fc">&nbsp;		if (!occurrences.containsKey(var))</b>
+<b class="fc">&nbsp;			occurrences.put(var, 0);</b>
+<b class="fc">&nbsp;		occurrences.put(var, occurrences.get(var) + 1);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void visit(SimpleName node) {
+<b class="fc">&nbsp;		String variableName = node.getIdentifier();</b>
+&nbsp;
+<b class="fc">&nbsp;		boolean accessFieldUsingThis = isFieldAccess &amp;&amp; declaredFields.contains(variableName);</b>
+<b class="fc">&nbsp;		boolean accessFieldUsingOnlyVariableName = !isFieldAccess &amp;&amp; declaredFields.contains(variableName) &amp;&amp; !variables.contains(variableName);</b>
+<b class="fc">&nbsp;		if((accessFieldUsingThis || accessFieldUsingOnlyVariableName) &amp;&amp; !isQualifiedName) {</b>
+<b class="fc">&nbsp;			plusOne(variableName);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void setResult(CKMethodResult result) {
+<b class="fc">&nbsp;		result.setFieldUsage(occurrences);</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

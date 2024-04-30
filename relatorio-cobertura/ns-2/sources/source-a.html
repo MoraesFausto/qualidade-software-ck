@@ -1,0 +1,212 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > LCOMNormalized</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.metric</a>
+</div>
+
+<h1>Coverage Summary for Class: LCOMNormalized (com.github.mauricioaniche.ck.metric)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LCOMNormalized</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,9%
+  </span>
+  <span class="absValue">
+    (31/33)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.metric;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.TreeSet;
+&nbsp;
+&nbsp;import org.eclipse.jdt.core.dom.FieldDeclaration;
+&nbsp;import org.eclipse.jdt.core.dom.IMethodBinding;
+&nbsp;import org.eclipse.jdt.core.dom.MethodDeclaration;
+&nbsp;import org.eclipse.jdt.core.dom.SimpleName;
+&nbsp;import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+&nbsp;
+&nbsp;import com.github.mauricioaniche.ck.CKClassResult;
+&nbsp;import com.github.mauricioaniche.ck.util.JDTUtils;
+&nbsp;
+&nbsp;public class LCOMNormalized implements CKASTVisitor, ClassLevelMetric {
+&nbsp;
+&nbsp;	HashMap&lt;String, TreeSet&lt;String&gt;&gt; declaredFields;
+&nbsp;	ArrayList&lt;String&gt; methods;
+&nbsp;	ArrayList&lt;Integer&gt; flags;
+&nbsp;	
+<b class="fc">&nbsp;	public LCOMNormalized() {</b>
+<b class="fc">&nbsp;		this.declaredFields = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;		this.methods = new ArrayList&lt;String&gt;();</b>
+<b class="fc">&nbsp;		this.flags = new ArrayList&lt;Integer&gt;();</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void visit(FieldDeclaration node) {
+&nbsp;		
+<b class="fc">&nbsp;		for(Object o : node.fragments()) {</b>
+<b class="fc">&nbsp;			VariableDeclarationFragment vdf = (VariableDeclarationFragment) o;</b>
+<b class="fc">&nbsp;			declaredFields.put(vdf.getName().toString(), new TreeSet&lt;String&gt;());</b>
+<b class="fc">&nbsp;		}</b>
+&nbsp;		
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void visit(SimpleName node) {
+<b class="fc">&nbsp;		String name = node.getFullyQualifiedName();</b>
+<b class="fc">&nbsp;		if(declaredFields.containsKey(name)) {</b>
+<b class="fc">&nbsp;			acessed(name);</b>
+&nbsp;		}
+&nbsp;		
+&nbsp;	}
+&nbsp;
+&nbsp;	private void acessed(String name) {
+<b class="fc">&nbsp;		if(!methods.isEmpty()){</b>
+<b class="fc">&nbsp;			this.declaredFields.get(name).add(this.methods.get(this.methods.size() - 1));</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void visit(MethodDeclaration node) {
+&nbsp;		
+<b class="fc">&nbsp;		String currentMethodName = JDTUtils.getMethodFullName(node);</b>
+&nbsp;		
+<b class="fc">&nbsp;		if(!this.methods.isEmpty()){</b>
+<b class="fc">&nbsp;			if(this.methods.get(this.methods.size() - 1).equals(currentMethodName)){</b>
+<b class="fc">&nbsp;				if(this.flags.get(this.flags.size() - 1) == 0){</b>
+<b class="fc">&nbsp;					this.flags.set((this.flags.size() - 1), 1);</b>
+&nbsp;				}else{
+<b class="nc">&nbsp;					this.methods.add(currentMethodName);</b>
+<b class="nc">&nbsp;					this.flags.add(0);</b>
+&nbsp;				}
+&nbsp;			} else{
+<b class="fc">&nbsp;				this.methods.add(currentMethodName);</b>
+<b class="fc">&nbsp;				this.flags.add(0);</b>
+&nbsp;			}
+&nbsp;		} else {
+<b class="fc">&nbsp;			this.methods.add(currentMethodName);</b>
+<b class="fc">&nbsp;			this.flags.add(0);</b>
+&nbsp;		}
+&nbsp;		
+&nbsp;	}
+&nbsp;	
+&nbsp;	@Override
+&nbsp;	public void setResult(CKClassResult result) {
+&nbsp;		
+&nbsp;		/*
+&nbsp;		 * LCOM = 1/a * (Σ{i=1 to a} {(m - μ(Ai)) / m})
+&nbsp;		 * where
+&nbsp;		 * a = number of attributes
+&nbsp;		 * m = number of methods
+&nbsp;		 * Σ{i=1 to a} = sum from 1 to a (number of attributes)
+&nbsp;		 * μ(Ai) = number of methods accessing attribute Ai
+&nbsp;		 *  
+&nbsp;		 * This version of computing LCOM is based on Henderson-Sellers definition:
+&nbsp;		 * Henderson-Sellers, Brian, Larry L. Constantine and Ian M. Graham. &quot;Coupling and cohesion (towards a valid metrics suite for object-oriented analysis and design).&quot; Object Oriented Systems 3 (1996): 143-158.
+&nbsp;		 */
+&nbsp;		
+&nbsp;		// formula (13) extracted from https://github.com/cqfn/jpeek/blob/master/papers/sellers96_LCOM2_LCOM3_LCOM5.pdf
+<b class="fc">&nbsp;		float sum = 0;</b>
+<b class="fc">&nbsp;		float lcomNormalized = 0;</b>
+&nbsp;		
+<b class="fc">&nbsp;		int numberOfAttributes = this.declaredFields.size();</b>
+<b class="fc">&nbsp;		int numberOfMethods = this.methods.size();</b>
+&nbsp;		
+<b class="fc">&nbsp;		for (String key : this.declaredFields.keySet())</b>
+<b class="fc">&nbsp;			sum = sum + (((float) (numberOfMethods - this.declaredFields.get(key).size())) / numberOfMethods);</b>
+&nbsp;		
+<b class="fc">&nbsp;		if(numberOfAttributes &gt; 0)</b>
+<b class="fc">&nbsp;			lcomNormalized = (((float) 1) * sum) / numberOfAttributes;</b>
+&nbsp;		
+<b class="fc">&nbsp;		result.setLcomNormalized(lcomNormalized);</b>
+&nbsp;		
+&nbsp;	}	
+&nbsp;	
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,231 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CouplingExtras</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.metric</a>
+</div>
+
+<h1>Coverage Summary for Class: CouplingExtras (com.github.mauricioaniche.ck.metric)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CouplingExtras</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (48/48)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.metric;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;public class CouplingExtras {
+&nbsp;
+&nbsp;	private Map&lt;String, Set&lt;String&gt;&gt; couplingClassIn;
+&nbsp;	private Map&lt;String, Set&lt;String&gt;&gt; couplingClassOut;
+&nbsp;	private Map&lt;String, Set&lt;String&gt;&gt; couplingMethodIn;
+&nbsp;	private Map&lt;String, Set&lt;String&gt;&gt; couplingMethodOut;
+&nbsp;	private static CouplingExtras instance;
+&nbsp;	
+<b class="fc">&nbsp;	private CouplingExtras() {</b>
+<b class="fc">&nbsp;		this.couplingClassIn = new HashMap&lt;String, Set&lt;String&gt;&gt;();</b>
+<b class="fc">&nbsp;		this.couplingClassOut = new HashMap&lt;String, Set&lt;String&gt;&gt;();</b>
+<b class="fc">&nbsp;		this.couplingMethodIn = new HashMap&lt;String, Set&lt;String&gt;&gt;();</b>
+<b class="fc">&nbsp;		this.couplingMethodOut = new HashMap&lt;String, Set&lt;String&gt;&gt;();</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void addToSetClassIn(String key, String clazz){
+<b class="fc">&nbsp;		if(this.couplingClassIn.get(key) != null){</b>
+<b class="fc">&nbsp;			this.couplingClassIn.get(key).add(clazz);</b>
+&nbsp;		}else {
+<b class="fc">&nbsp;			this.couplingClassIn.put(key, new HashSet&lt;&gt;());</b>
+<b class="fc">&nbsp;			this.couplingClassIn.get(key).add(clazz);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void addToSetClassOut(String key, String clazz){
+<b class="fc">&nbsp;		if(this.couplingClassOut.get(key) != null){</b>
+<b class="fc">&nbsp;			this.couplingClassOut.get(key).add(clazz);</b>
+&nbsp;		}else {
+<b class="fc">&nbsp;			this.couplingClassOut.put(key, new HashSet&lt;&gt;());</b>
+<b class="fc">&nbsp;			this.couplingClassOut.get(key).add(clazz);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void addToSetMethodIn(String key, String method){
+<b class="fc">&nbsp;		if(this.couplingMethodIn.get(key) != null){</b>
+<b class="fc">&nbsp;			this.couplingMethodIn.get(key).add(method);</b>
+&nbsp;		}else {
+<b class="fc">&nbsp;			this.couplingMethodIn.put(key, new HashSet&lt;&gt;());</b>
+<b class="fc">&nbsp;			this.couplingMethodIn.get(key).add(method);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void addToSetMethodOut(String key, String method){
+<b class="fc">&nbsp;		if(this.couplingMethodOut.get(key) != null){</b>
+<b class="fc">&nbsp;			this.couplingMethodOut.get(key).add(method);</b>
+&nbsp;		}else {
+<b class="fc">&nbsp;			this.couplingMethodOut.put(key, new HashSet&lt;&gt;());</b>
+<b class="fc">&nbsp;			this.couplingMethodOut.get(key).add(method);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;	
+&nbsp;	public int getValueCBOClass(String className){
+&nbsp;
+<b class="fc">&nbsp;		return getValueFanInClass(className) + getValueFanOutClass(className);</b>
+&nbsp;		
+&nbsp;	}
+&nbsp;	
+&nbsp;	public int getValueCBOMethod(String methodName){
+&nbsp;
+<b class="fc">&nbsp;		return getValueFanInMethod(methodName) + getValueFanOutMethod(methodName);</b>
+&nbsp;		
+&nbsp;	}
+&nbsp;	
+&nbsp;	public int getValueFanInClass(String className){
+&nbsp;
+<b class="fc">&nbsp;		if(this.couplingClassIn.get(className) != null){</b>
+<b class="fc">&nbsp;			this.couplingClassIn = clean(className, this.couplingClassIn);</b>
+<b class="fc">&nbsp;			return this.couplingClassIn.get(className).size();</b>
+&nbsp;		}
+<b class="fc">&nbsp;		return 0;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public int getValueFanOutClass(String className){
+&nbsp;
+<b class="fc">&nbsp;		if(this.couplingClassOut.get(className) != null){</b>
+<b class="fc">&nbsp;			this.couplingClassOut = clean(className, this.couplingClassOut);</b>
+<b class="fc">&nbsp;			return this.couplingClassOut.get(className).size();</b>
+&nbsp;		}
+<b class="fc">&nbsp;		return 0;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public int getValueFanInMethod(String methodName){
+&nbsp;
+<b class="fc">&nbsp;		if(this.couplingMethodIn.get(methodName) != null)</b>
+<b class="fc">&nbsp;			return this.couplingMethodIn.get(methodName).size();</b>
+&nbsp;		
+<b class="fc">&nbsp;		return 0;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public int getValueFanOutMethod(String methodName){
+&nbsp;
+<b class="fc">&nbsp;		if(this.couplingMethodOut.get(methodName) != null)</b>
+<b class="fc">&nbsp;			return this.couplingMethodOut.get(methodName).size();</b>
+&nbsp;		
+<b class="fc">&nbsp;		return 0;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	private Map&lt;String, Set&lt;String&gt;&gt; clean(String componentName, Map&lt;String, Set&lt;String&gt;&gt; coupling) {
+<b class="fc">&nbsp;		Set&lt;String&gt; singleQualifiedTypes = coupling.get(componentName).stream().filter(x -&gt; !x.contains(&quot;.&quot;)).collect(Collectors.toSet());</b>
+&nbsp;
+<b class="fc">&nbsp;		for(String singleQualifiedType : singleQualifiedTypes) {</b>
+<b class="fc">&nbsp;			long count = coupling.get(componentName).stream().filter(x -&gt; x.endsWith(&quot;.&quot; + singleQualifiedType)).count();</b>
+&nbsp;
+<b class="fc">&nbsp;			boolean theSameFullyQualifiedTypeExists = count &gt; 0;</b>
+<b class="fc">&nbsp;			if(theSameFullyQualifiedTypeExists)</b>
+<b class="fc">&nbsp;				coupling.get(componentName).remove(singleQualifiedType);</b>
+<b class="fc">&nbsp;		}</b>
+&nbsp;		
+<b class="fc">&nbsp;		return coupling;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public static CouplingExtras getInstance(){
+<b class="fc">&nbsp;		if(instance == null){</b>
+<b class="fc">&nbsp;			instance = new CouplingExtras();</b>
+&nbsp;		}
+<b class="fc">&nbsp;		return instance;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

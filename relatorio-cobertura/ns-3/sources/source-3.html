@@ -1,0 +1,256 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > JDTUtils</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.util</a>
+</div>
+
+<h1>Coverage Summary for Class: JDTUtils (com.github.mauricioaniche.ck.util)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JDTUtils</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,9%
+  </span>
+  <span class="absValue">
+    (13/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,7%
+  </span>
+  <span class="absValue">
+    (59/63)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.util;
+&nbsp;
+&nbsp;import org.eclipse.jdt.core.dom.*;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.List;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+<b class="nc">&nbsp;public class JDTUtils {</b>
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * If the method has a body, we can get the starting line of the method, ignoring any possible
+&nbsp;	 * Javadoc at the top of it.
+&nbsp;	 * If there&#39;s no body, JDT doesn&#39;t create a &#39;body&#39;, and thus, we can&#39;t get its starting position; thus,
+&nbsp;	 * we fall back to the starting position of the methoddeclarationnode, which can contain the javadoc.
+&nbsp;	 * This seems like an exceptional case, though.
+&nbsp;	 * TODO: better ideas are welcome.
+&nbsp;	 */
+&nbsp;
+&nbsp;	public static int getStartLine(CompilationUnit cu, MethodDeclaration node) {
+<b class="fc">&nbsp;		return node.getBody() != null ?</b>
+<b class="fc">&nbsp;				cu.getLineNumber(node.getBody().getStartPosition()) :</b>
+<b class="fc">&nbsp;				cu.getLineNumber(node.getStartPosition());</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public static int getStartLine(CompilationUnit cu, Initializer node) {
+<b class="fc">&nbsp;		return node.getBody() != null ?</b>
+<b class="fc">&nbsp;				cu.getLineNumber(node.getBody().getStartPosition()) :</b>
+<b class="nc">&nbsp;				cu.getLineNumber(node.getStartPosition());</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	//Get the method name with parameter count and types, e.g. m1/1[int]
+&nbsp;	public static String getMethodFullName(IMethodBinding binding) {
+<b class="fc">&nbsp;		String methodName = binding.getName();</b>
+<b class="fc">&nbsp;		return methodName + &quot;/&quot; + getMethodSignature(binding);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public static String getMethodFullName(MethodDeclaration node) {
+<b class="fc">&nbsp;		if(node.resolveBinding() != null){</b>
+<b class="fc">&nbsp;			return getMethodFullName(node.resolveBinding());</b>
+&nbsp;		}
+<b class="fc">&nbsp;		String methodName = node.getName().getFullyQualifiedName();</b>
+<b class="fc">&nbsp;		return methodName + &quot;/&quot; + getMethodSignature(node);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	//Get the fully qualified method name with parameter count and types, e.g. rfc.GO.m1/1[int]
+&nbsp;	public static String getQualifiedMethodFullName(IMethodBinding binding){
+<b class="fc">&nbsp;		String methodName = binding.getName();</b>
+<b class="fc">&nbsp;		if(binding.getDeclaringClass() != null){</b>
+<b class="fc">&nbsp;			methodName = binding.getDeclaringClass().getQualifiedName() + &quot;.&quot; + binding.getName();</b>
+&nbsp;		}
+<b class="fc">&nbsp;		return methodName + &quot;/&quot; + getMethodSignature(binding);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	//Get the fully qualified method name with parameter count and types, e.g. rfc.GO.m1/1[int]
+&nbsp;	public static String getQualifiedMethodFullName(MethodDeclaration node) {
+<b class="fc">&nbsp;		if(node.resolveBinding() != null){</b>
+<b class="fc">&nbsp;			return getQualifiedMethodFullName(node.resolveBinding());</b>
+&nbsp;		}
+<b class="fc">&nbsp;		String methodName = node.getName().getFullyQualifiedName();</b>
+<b class="fc">&nbsp;		return methodName + &quot;/&quot; + getMethodSignature(node);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	//Get the fully qualified method name with parameter count and types, e.g. rfc.GO.m1/1[int]
+&nbsp;	public static String getQualifiedMethodFullName(MethodInvocation node) {
+<b class="fc">&nbsp;		IMethodBinding binding = node.resolveMethodBinding();</b>
+<b class="fc">&nbsp;		if(binding != null){</b>
+<b class="fc">&nbsp;			return getQualifiedMethodFullName(binding);</b>
+&nbsp;		} else {
+<b class="fc">&nbsp;			return node.getName().getFullyQualifiedName() + &quot;/&quot; + getMethodSignature(node.arguments(), node.typeArguments());</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	//Get the fully qualified method name with parameter count and types, e.g. rfc.GO.m1/1[int]
+&nbsp;	public static String getQualifiedMethodFullName(SuperMethodInvocation node) {
+<b class="fc">&nbsp;		IMethodBinding binding = node.resolveMethodBinding();</b>
+<b class="fc">&nbsp;		if(binding != null){</b>
+<b class="fc">&nbsp;			return getQualifiedMethodFullName(binding);</b>
+<b class="fc">&nbsp;		} else if(node.getQualifier() != null){</b>
+<b class="nc">&nbsp;			return node.getQualifier().getFullyQualifiedName() + getMethodSignature(node.arguments(), node.typeArguments());</b>
+&nbsp;		}
+<b class="fc">&nbsp;		return node.getName().getFullyQualifiedName() + &quot;/&quot; + getMethodSignature(node.arguments(), node.typeArguments());</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	//Get the signature of a method with parameter count and types, e.g. 1[int]
+&nbsp;	public static String getMethodSignature(IMethodBinding node){
+<b class="fc">&nbsp;		int parameterCount = node.getParameterTypes()==null ? 0 : node.getParameterTypes().length;</b>
+<b class="fc">&nbsp;		List&lt;String&gt; parameterTypes = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;		if(parameterCount &gt; 0) {</b>
+<b class="fc">&nbsp;			for(ITypeBinding binding : node.getParameterTypes()) {</b>
+&nbsp;
+<b class="fc">&nbsp;				String v = binding.getQualifiedName();</b>
+&nbsp;
+<b class="fc">&nbsp;				parameterTypes.add(v);</b>
+&nbsp;			}
+&nbsp;		}
+<b class="fc">&nbsp;		return formatSignature(parameterTypes);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	//Get the signature of a method with parameter count and types, e.g. 1[int]
+&nbsp;	public static String getMethodSignature(MethodDeclaration node){
+<b class="fc">&nbsp;		int parameterCount = node.parameters()==null ? 0 : node.parameters().size();</b>
+<b class="fc">&nbsp;		List&lt;String&gt; parameterTypes = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;		if(parameterCount &gt; 0) {</b>
+<b class="fc">&nbsp;			for(Object p0 : node.parameters()) {</b>
+<b class="fc">&nbsp;				SingleVariableDeclaration parameter = (SingleVariableDeclaration) p0;</b>
+&nbsp;
+<b class="fc">&nbsp;				ITypeBinding binding = parameter.getType().resolveBinding();</b>
+&nbsp;
+&nbsp;				String v;
+<b class="fc">&nbsp;				if(binding == null || binding.isRecovered())</b>
+<b class="fc">&nbsp;					v = parameter.getType().toString();</b>
+&nbsp;				else
+<b class="fc">&nbsp;					v = binding.getQualifiedName();</b>
+&nbsp;
+<b class="fc">&nbsp;				if(parameter.isVarargs()) v+=&quot;[]&quot;;</b>
+&nbsp;
+<b class="fc">&nbsp;				parameterTypes.add(v);</b>
+<b class="fc">&nbsp;			}</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		return formatSignature(parameterTypes);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	//Helper method to extract the number of arguments from an argument list used to generate the method signature for MethodInvocation nodes
+&nbsp;	private static String getMethodSignature(List&lt;?&gt; arguments, List&lt;?&gt; typeArguments) {
+<b class="fc">&nbsp;		int argumentCount = arguments != null ? arguments.size() : 0;</b>
+<b class="fc">&nbsp;		List&lt;String&gt; parameterTypes = typeArguments.stream().map(object -&gt; object.toString()).collect(Collectors.toList());</b>
+<b class="fc">&nbsp;		return formatSignature(parameterTypes);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private static String formatSignature(List&lt;String&gt; parameters){
+<b class="fc">&nbsp;		int parameterCount = parameters.size();</b>
+<b class="fc">&nbsp;		return String.format(&quot;%d%s%s%s&quot;,</b>
+<b class="fc">&nbsp;				parameterCount,</b>
+<b class="fc">&nbsp;				(parameterCount &gt; 0 ? &quot;[&quot; : &quot;&quot;),</b>
+<b class="fc">&nbsp;				(parameterCount &gt; 0 ? String.join(&quot;,&quot;, parameters) : &quot;&quot;),</b>
+<b class="fc">&nbsp;				(parameterCount &gt; 0 ? &quot;]&quot; : &quot;&quot;)</b>
+&nbsp;		);
+&nbsp;	}
+&nbsp;
+&nbsp;	//get the simple name from the fragments of a variable or field declaration, e.g. [a=10] -&gt; a
+&nbsp;	//Be aware: the function might return the empty string
+&nbsp;	public static List&lt;String&gt; getVariableName(List&lt;VariableDeclarationFragment&gt; fragments){
+<b class="fc">&nbsp;		if (fragments != null)</b>
+<b class="fc">&nbsp;			return fragments.stream().map(fragment -&gt; fragment.getName().getIdentifier()).collect(Collectors.toList());</b>
+<b class="nc">&nbsp;		return Collections.emptyList();</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

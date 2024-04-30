@@ -1,0 +1,174 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > NumberOfFields</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.metric</a>
+</div>
+
+<h1>Coverage Summary for Class: NumberOfFields (com.github.mauricioaniche.ck.metric)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NumberOfFields</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (32/32)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.metric;
+&nbsp;
+&nbsp;import com.github.mauricioaniche.ck.CKClassResult;
+&nbsp;import org.eclipse.jdt.core.dom.FieldDeclaration;
+&nbsp;import org.eclipse.jdt.core.dom.Modifier;
+&nbsp;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;import static com.github.mauricioaniche.ck.util.JDTUtils.getVariableName;
+&nbsp;
+<b class="fc">&nbsp;public class NumberOfFields implements CKASTVisitor, ClassLevelMetric {</b>
+&nbsp;
+<b class="fc">&nbsp;	private Set&lt;String&gt; fieldNames = new HashSet&lt;&gt;();</b>
+&nbsp;	private int fields;
+&nbsp;	private int staticFields;
+&nbsp;	private int publicFields;
+&nbsp;	private int privateFields;
+&nbsp;	private int protectedFields;
+&nbsp;	private int defaultFields;
+&nbsp;	private int finalFields;
+&nbsp;	private int synchronizedFields;
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void visit(FieldDeclaration node) {
+<b class="fc">&nbsp;		fields++;</b>
+<b class="fc">&nbsp;		fieldNames.addAll(getVariableName(node.fragments()));</b>
+&nbsp;
+<b class="fc">&nbsp;		boolean isPublic = Modifier.isPublic(node.getModifiers());</b>
+<b class="fc">&nbsp;		boolean isPrivate = Modifier.isPrivate(node.getModifiers());</b>
+<b class="fc">&nbsp;		boolean isProtected = Modifier.isProtected(node.getModifiers());</b>
+&nbsp;
+<b class="fc">&nbsp;		if(isPublic)</b>
+<b class="fc">&nbsp;			publicFields++;</b>
+<b class="fc">&nbsp;		else if(isPrivate)</b>
+<b class="fc">&nbsp;			privateFields++;</b>
+<b class="fc">&nbsp;		else if(isProtected)</b>
+<b class="fc">&nbsp;			protectedFields++;</b>
+&nbsp;		else
+<b class="fc">&nbsp;			defaultFields++;</b>
+&nbsp;
+&nbsp;		// other characteristics rather than visibility
+<b class="fc">&nbsp;		boolean isStatic = Modifier.isStatic(node.getModifiers());</b>
+<b class="fc">&nbsp;		boolean isFinal = Modifier.isFinal(node.getModifiers());</b>
+<b class="fc">&nbsp;		boolean isSynchronized = Modifier.isSynchronized(node.getModifiers());</b>
+&nbsp;		
+<b class="fc">&nbsp;		if(isStatic)</b>
+<b class="fc">&nbsp;			staticFields++;</b>
+&nbsp;
+<b class="fc">&nbsp;		if(isFinal)</b>
+<b class="fc">&nbsp;			finalFields++;</b>
+&nbsp;
+<b class="fc">&nbsp;		if(isSynchronized)</b>
+<b class="fc">&nbsp;			synchronizedFields++;</b>
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void setResult(CKClassResult result) {
+<b class="fc">&nbsp;		result.setNumberOfFields(fields);</b>
+<b class="fc">&nbsp;		result.setFieldNames(fieldNames);</b>
+<b class="fc">&nbsp;		result.setNumberOfStaticFields(staticFields);</b>
+<b class="fc">&nbsp;		result.setNumberOfPublicFields(publicFields);</b>
+<b class="fc">&nbsp;		result.setNumberOfPrivateFields(privateFields);</b>
+<b class="fc">&nbsp;		result.setNumberOfProtectedFields(protectedFields);</b>
+<b class="fc">&nbsp;		result.setNumberOfDefaultFields(defaultFields);</b>
+<b class="fc">&nbsp;		result.setNumberOfFinalFields(finalFields);</b>
+<b class="fc">&nbsp;		result.setNumberOfSynchronizedFields(synchronizedFields);</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

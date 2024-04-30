@@ -1,0 +1,162 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > NOC</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.metric</a>
+</div>
+
+<h1>Coverage Summary for Class: NOC (com.github.mauricioaniche.ck.metric)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NOC</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (10/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.metric;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;import org.eclipse.jdt.core.IType;
+&nbsp;import org.eclipse.jdt.core.dom.ITypeBinding;
+&nbsp;import org.eclipse.jdt.core.dom.ParameterizedType;
+&nbsp;import org.eclipse.jdt.core.dom.SimpleType;
+&nbsp;import org.eclipse.jdt.core.dom.Type;
+&nbsp;import org.eclipse.jdt.core.dom.TypeDeclaration;
+&nbsp;
+&nbsp;import com.github.mauricioaniche.ck.CKClassResult;
+&nbsp;
+&nbsp;public class NOC implements CKASTVisitor, ClassLevelMetric{
+&nbsp;
+&nbsp;	private String name;
+&nbsp;	private NOCExtras extras;
+&nbsp;	
+<b class="fc">&nbsp;	public NOC() {</b>
+<b class="fc">&nbsp;		this.extras = NOCExtras.getInstance();</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	@Override
+&nbsp;	public void visit(TypeDeclaration node){
+<b class="fc">&nbsp;		ITypeBinding binding = node.resolveBinding();</b>
+&nbsp;		
+<b class="fc">&nbsp;		if(binding != null){</b>
+<b class="fc">&nbsp;			this.name = binding.getQualifiedName();</b>
+<b class="fc">&nbsp;			ITypeBinding father = binding.getSuperclass();</b>
+<b class="fc">&nbsp;			if(father != null){</b>
+<b class="fc">&nbsp;				this.extras.plusOne(father.getQualifiedName());</b>
+&nbsp;			}
+<b class="fc">&nbsp;		} else {</b>
+<b class="nc">&nbsp;			this.name = node.getName().getFullyQualifiedName();</b>
+<b class="nc">&nbsp;			Type type = node.getSuperclassType();</b>
+&nbsp;			
+<b class="nc">&nbsp;			SimpleType castedFatherType = null;</b>
+&nbsp;			
+<b class="nc">&nbsp;			if(node.getSuperclassType() instanceof SimpleType)</b>
+<b class="nc">&nbsp;				castedFatherType = ((SimpleType) node.getSuperclassType());</b>
+&nbsp;			
+<b class="nc">&nbsp;			if(castedFatherType != null){</b>
+<b class="nc">&nbsp;				this.extras.plusOne(castedFatherType.getName().getFullyQualifiedName());</b>
+&nbsp;			}
+<b class="nc">&nbsp;			List&lt;Type&gt; list = node.superInterfaceTypes();</b>
+<b class="nc">&nbsp;			list = list.stream().filter(x -&gt; (x instanceof SimpleType)).collect(Collectors.toList());</b>
+<b class="nc">&nbsp;			list.stream().map(x -&gt; (SimpleType) x).forEach(x -&gt; this.extras.plusOne(x.getName().getFullyQualifiedName()));</b>
+&nbsp;		}
+&nbsp;		
+&nbsp;	}
+&nbsp;	
+&nbsp;	@Override
+&nbsp;	public void setResult(CKClassResult result) {
+&nbsp;		
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

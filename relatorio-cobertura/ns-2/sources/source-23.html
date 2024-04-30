@@ -1,0 +1,236 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > TightClassCohesion</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.metric</a>
+</div>
+
+<h1>Coverage Summary for Class: TightClassCohesion (com.github.mauricioaniche.ck.metric)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TightClassCohesion</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (68/68)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.metric;
+&nbsp;
+&nbsp;import com.github.mauricioaniche.ck.CKClassResult;
+&nbsp;import com.github.mauricioaniche.ck.CKMethodResult;
+&nbsp;import com.google.common.collect.Sets;
+&nbsp;import org.apache.commons.lang3.ArrayUtils;
+&nbsp;import org.apache.commons.lang3.tuple.ImmutablePair;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;//Calculates the tight and loose class cohesion for a class.
+&nbsp;//For more details see: https://www.aivosto.com/project/help/pm-oo-cohesion.html#TCC_LCC
+&nbsp;@RunAfter(metrics={RFC.class, MethodLevelFieldUsageCount.class, MethodInvocationsLocal.class})
+<b class="fc">&nbsp;public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {</b>
+<b class="fc">&nbsp;    private HashMap&lt;String, Set&lt;String&gt;&gt; accessedFields = new HashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;    //Two methods are directly connected if:
+&nbsp;    //1. both access the same class-level variable
+&nbsp;    //2. their call trees access the same class-level variable (only within the class)
+&nbsp;    private Set&lt;ImmutablePair&lt;String, String&gt;&gt; getDirectConnections(CKClassResult result){
+<b class="fc">&nbsp;        for (CKMethodResult method : result.getMethods()){</b>
+<b class="fc">&nbsp;            accessedFields.put(method.getMethodName(), method.getFieldsAccessed());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        HashMap&lt;String, Set&lt;String&gt;&gt; allAccessedFields = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        for (CKMethodResult method : result.getVisibleMethods()){</b>
+<b class="fc">&nbsp;            Set&lt;String&gt; allLocalFields = collectAccessedFields(method);</b>
+<b class="fc">&nbsp;            allLocalFields.addAll(method.getFieldsAccessed());</b>
+<b class="fc">&nbsp;            allAccessedFields.put(method.getMethodName(), allLocalFields);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        Set&lt;ImmutablePair&lt;String, String&gt;&gt; directConnections = new HashSet&lt;&gt;();</b>
+<b class="fc">&nbsp;        for(String firstKey : allAccessedFields.keySet()){</b>
+<b class="fc">&nbsp;            for(String secondKey : allAccessedFields.keySet()){</b>
+<b class="fc">&nbsp;                Set&lt;String&gt; accessedFieldsFirst = Sets.newHashSet(allAccessedFields.get(firstKey));</b>
+<b class="fc">&nbsp;                Set&lt;String&gt; accessedFieldsSecond = allAccessedFields.get(secondKey);</b>
+<b class="fc">&nbsp;                accessedFieldsFirst.retainAll(accessedFieldsSecond);</b>
+<b class="fc">&nbsp;                if(!firstKey.equals(secondKey) &amp;&amp; accessedFieldsFirst.size() &gt; 0){</b>
+<b class="fc">&nbsp;                    directConnections.add(new ImmutablePair&lt;String, String&gt;(firstKey, secondKey));</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return directConnections;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Collect all accessed fields from the invocation tree of a method
+&nbsp;    private Set&lt;String&gt; collectAccessedFields(CKMethodResult method){
+<b class="fc">&nbsp;        Set&lt;String&gt; allLocalInvocations = method.getMethodInvocationsIndirectLocal().keySet();</b>
+&nbsp;
+<b class="fc">&nbsp;        Set&lt;String&gt; allLocalFields = new HashSet&lt;&gt;();</b>
+<b class="fc">&nbsp;        for (String invocation : allLocalInvocations){</b>
+<b class="fc">&nbsp;            Set&lt;String&gt; currentFields = accessedFields.get(invocation);</b>
+<b class="fc">&nbsp;            if(currentFields != null)</b>
+<b class="fc">&nbsp;                allLocalFields.addAll(currentFields);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return allLocalFields;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Two methods are indirectly connected if:
+&nbsp;    //1. they are not directly connected
+&nbsp;    //2. they are connected via other methods, e.g. X -&gt; Y -&gt; Z
+&nbsp;    private Set&lt;ImmutablePair&lt;String, String&gt;&gt; getIndirectConnections(CKClassResult result, Set&lt;ImmutablePair&lt;String, String&gt;&gt; directConnections){
+&nbsp;        //convert the direct connections into a Map in order to simplify the usage
+<b class="fc">&nbsp;        HashMap&lt;String, Set&lt;String&gt;&gt; directConnectionsMap = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        for(CKMethodResult method : result.getMethods()){</b>
+<b class="fc">&nbsp;            directConnectionsMap.put(method.getMethodName(), Sets.newHashSet(Sets.newHashSet(ArrayUtils.EMPTY_STRING_ARRAY)));</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        for(ImmutablePair&lt;String, String&gt; pair : directConnections){</b>
+<b class="fc">&nbsp;            directConnectionsMap.get(pair.left).add(pair.right);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        //extract all direct and indirect connections between methods from the direct connections
+<b class="fc">&nbsp;        HashMap&lt;String, Set&lt;String&gt;&gt; indirectConnectionsMap = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        for (CKMethodResult method : result.getVisibleMethods()){</b>
+<b class="fc">&nbsp;            Set&lt;String&gt; localConnections = extractConnections(method.getMethodName(), new HashSet&lt;&gt;(), directConnectionsMap);</b>
+<b class="fc">&nbsp;            indirectConnectionsMap.put(method.getMethodName(), localConnections);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        //map the indirect connections into connection pairs
+<b class="fc">&nbsp;        Set&lt;ImmutablePair&lt;String, String&gt;&gt; indirectConnections = new HashSet&lt;&gt;();</b>
+<b class="fc">&nbsp;        for(String key : indirectConnectionsMap.keySet()){</b>
+<b class="fc">&nbsp;            indirectConnections.addAll(indirectConnectionsMap.get(key).stream()</b>
+<b class="fc">&nbsp;                    .filter(right -&gt; !key.equals(right))</b>
+<b class="fc">&nbsp;                    .map(right -&gt; new ImmutablePair&lt;String, String&gt;(key, right))</b>
+<b class="fc">&nbsp;                    .collect(Collectors.toSet()));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;        //remove all direct connections
+<b class="fc">&nbsp;        indirectConnections.removeAll(directConnections);</b>
+<b class="fc">&nbsp;        return indirectConnections;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Recursively extract all indirect connections between methods starting with the given method
+&nbsp;    //Explored contains all previously explored connections
+&nbsp;    //connections contains all direct method connections of interest
+&nbsp;    private Set&lt;String&gt; extractConnections(String currentConnection, Set&lt;String&gt; explored, HashMap&lt;String, Set&lt;String&gt;&gt; connections){
+<b class="fc">&nbsp;        explored.add(currentConnection);</b>
+&nbsp;
+&nbsp;        //only explore connections that were not previously explored
+<b class="fc">&nbsp;        Set&lt;String&gt; nextConnections = connections.get(currentConnection).stream()</b>
+<b class="fc">&nbsp;                .filter(connection -&gt; !explored.contains(connection))</b>
+<b class="fc">&nbsp;                .collect(Collectors.toSet());</b>
+<b class="fc">&nbsp;        explored.addAll(nextConnections);</b>
+<b class="fc">&nbsp;        for (String nextConnection : nextConnections){</b>
+<b class="fc">&nbsp;            explored.addAll(extractConnections(nextConnection, explored, connections));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        //Stops when all invocations are explored: there are no more invocations to be explored
+<b class="fc">&nbsp;        return explored;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setResult(CKClassResult result) {
+&nbsp;        //in case the class does not contain any visible methods, TCC and LCC have no reasonable value, thus set it to -1
+<b class="fc">&nbsp;        if(result.getVisibleMethods().size() &lt; 1){</b>
+<b class="fc">&nbsp;            result.setTightClassCohesion(-1);</b>
+<b class="fc">&nbsp;            result.setLooseClassCohesion(-1);</b>
+&nbsp;        } else {
+&nbsp;            //maximum number of possible connections (N * (N -1))
+<b class="fc">&nbsp;            float np = result.getVisibleMethods().size() * (result.getVisibleMethods().size() - 1);</b>
+&nbsp;
+&nbsp;            //number of direct connections (number of edges in the connection graph) in this class
+<b class="fc">&nbsp;            Set&lt;ImmutablePair&lt;String, String&gt;&gt; directConnections = getDirectConnections(result);</b>
+<b class="fc">&nbsp;            result.setTightClassCohesion(directConnections.size() / np);</b>
+&nbsp;
+&nbsp;            //number of indirect connections in this class
+<b class="fc">&nbsp;            Set&lt;ImmutablePair&lt;String, String&gt;&gt; indirectConnections = getIndirectConnections(result, directConnections);</b>
+<b class="fc">&nbsp;            result.setLooseClassCohesion((directConnections.size() + indirectConnections.size()) / np);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

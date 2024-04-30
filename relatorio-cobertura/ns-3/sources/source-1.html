@@ -1,0 +1,173 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DependencySorter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.util</a>
+</div>
+
+<h1>Coverage Summary for Class: DependencySorter (com.github.mauricioaniche.ck.util)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DependencySorter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (23/23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.util;
+&nbsp;
+&nbsp;import com.github.mauricioaniche.ck.metric.RunAfter;
+&nbsp;import org.apache.commons.lang3.tuple.Pair;
+&nbsp;
+&nbsp;import java.util.Arrays;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Stack;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;import java.util.stream.IntStream;
+&nbsp;
+<b class="fc">&nbsp;public class DependencySorter {</b>
+&nbsp;
+&nbsp;    public &lt;T&gt; List&lt;Class&lt;? extends T&gt;&gt; sort(List&lt;Class&lt;? extends T&gt;&gt; toSort) {
+&nbsp;        // the stack will contain the final list of vertexes
+<b class="fc">&nbsp;        Stack&lt;Integer&gt; sortedStack = new Stack&lt;&gt;();</b>
+&nbsp;
+&nbsp;        // first step, we build a simple adjacent matrix
+<b class="fc">&nbsp;        boolean[][] adjacencyMatrix = deriveAdjacencyMatrix(toSort);</b>
+&nbsp;
+&nbsp;        // the array will keep a list of nodes we visited before
+&nbsp;        // all marked as &#39;not visited&#39; at the beginning
+<b class="fc">&nbsp;        boolean visited[] = new boolean[toSort.size()];</b>
+&nbsp;
+&nbsp;        // visit all of them, in order
+<b class="fc">&nbsp;        for (int i = 0; i &lt; toSort.size(); i++)</b>
+<b class="fc">&nbsp;            if (visited[i] == false)</b>
+<b class="fc">&nbsp;                topologicalSort(i, visited, adjacencyMatrix, sortedStack);</b>
+&nbsp;
+<b class="fc">&nbsp;        return sortedStack.stream().map(i -&gt; toSort.get(i)).collect(Collectors.toList());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void topologicalSort(int v, boolean[] visited, boolean[][] adjacencyMatrix, Stack&lt;Integer&gt; sortedStack) {
+&nbsp;        // Mark the current node as visited
+<b class="fc">&nbsp;        visited[v] = true;</b>
+&nbsp;
+&nbsp;        // Visit the adjacent nodes before adding this one in the solution
+<b class="fc">&nbsp;        IntStream.range(0, adjacencyMatrix[v].length)</b>
+<b class="fc">&nbsp;                .filter(i -&gt; adjacencyMatrix[v][i])</b>
+<b class="fc">&nbsp;                .filter(i -&gt; !visited[i])</b>
+<b class="fc">&nbsp;                .forEach(i -&gt; topologicalSort(i, visited, adjacencyMatrix, sortedStack));</b>
+&nbsp;
+&nbsp;        // After visiting all adjacent nodes (and their adjacents, ...) first,
+&nbsp;        // we can add this one to the solution
+<b class="fc">&nbsp;        sortedStack.push(v);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private &lt;T&gt; boolean[][] deriveAdjacencyMatrix(List&lt;Class&lt;? extends T&gt;&gt; toSort) {
+&nbsp;
+<b class="fc">&nbsp;        final boolean[][] adjacencyMatrix = new boolean[toSort.size()][toSort.size()];</b>
+&nbsp;
+&nbsp;        // for each element in the list
+<b class="fc">&nbsp;        IntStream.range(0, toSort.size())</b>
+&nbsp;                // remove the ones that do not contain @RunAfter
+<b class="fc">&nbsp;                .filter(i -&gt; toSort.get(i).getAnnotation(RunAfter.class) != null)</b>
+&nbsp;                // get the list of elements they depend upon, together with the index of the current element
+<b class="fc">&nbsp;                .mapToObj(i -&gt; Pair.of(i,toSort.get(i).getAnnotation(RunAfter.class).metrics()))</b>
+&nbsp;                // for each element, for each dependency, mark it as true in the adjacent list
+&nbsp;                // we ignore dependencies that are not in the list (a list might contain method-level
+&nbsp;                // class-level dependencies, so we should ignore the ones we are not dealing with here)
+<b class="fc">&nbsp;                .flatMap(p -&gt; Arrays.stream(p.getValue())</b>
+<b class="fc">&nbsp;                        .map(d -&gt; Pair.of(p.getKey(),toSort.indexOf(d)))</b>
+<b class="fc">&nbsp;                        .filter(d -&gt; d.getValue() != -1))</b>
+<b class="fc">&nbsp;                .forEach(p -&gt; adjacencyMatrix[p.getKey()][p.getValue()] = true);</b>
+&nbsp;
+<b class="fc">&nbsp;        return adjacencyMatrix;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>

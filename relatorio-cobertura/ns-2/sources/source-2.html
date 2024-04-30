@@ -1,0 +1,804 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CKASTVisitor</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.github.mauricioaniche.ck.metric</a>
+</div>
+
+<h1>Coverage Summary for Class: CKASTVisitor (com.github.mauricioaniche.ck.metric)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CKASTVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    48,5%
+  </span>
+  <span class="absValue">
+    (96/198)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    48,5%
+  </span>
+  <span class="absValue">
+    (96/198)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.github.mauricioaniche.ck.metric;
+&nbsp;
+&nbsp;import org.eclipse.jdt.core.dom.*;
+&nbsp;
+&nbsp;public interface CKASTVisitor {
+&nbsp;
+&nbsp;
+&nbsp;	default void visit(AnnotationTypeDeclaration node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(AnnotationTypeMemberDeclaration node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(AnonymousClassDeclaration node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ArrayAccess node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ArrayCreation node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ArrayInitializer node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ArrayType node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(AssertStatement node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(Assignment node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(Block node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(BlockComment node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(BooleanLiteral node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(BreakStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(CastExpression node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(CatchClause node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(CharacterLiteral node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ClassInstanceCreation node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(CompilationUnit node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ConditionalExpression node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ConstructorInvocation node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ContinueStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(CreationReference node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(Dimension node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(DoStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(EmptyStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(EnhancedForStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(EnumConstantDeclaration node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(EnumDeclaration node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ExportsDirective node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ExpressionMethodReference node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ExpressionStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(FieldAccess node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(FieldDeclaration node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ForStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(IfStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ImportDeclaration node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(InfixExpression node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(Initializer node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(InstanceofExpression node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(IntersectionType node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(Javadoc node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(LabeledStatement node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(LambdaExpression node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(LineComment node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(MarkerAnnotation node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(MemberRef node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(MemberValuePair node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(MethodRef node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(MethodRefParameter node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(MethodDeclaration node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(MethodInvocation node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(Modifier node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ModuleDeclaration node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ModuleModifier node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(NameQualifiedType node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(NormalAnnotation node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(NullLiteral node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(NumberLiteral node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(OpensDirective node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(PackageDeclaration node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ParameterizedType node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ParenthesizedExpression node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(PostfixExpression node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(PrefixExpression node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ProvidesDirective node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(PrimitiveType node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(QualifiedName node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(QualifiedType node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(RequiresDirective node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ReturnStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(SimpleName node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(SimpleType node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(SingleMemberAnnotation node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(SingleVariableDeclaration node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(StringLiteral node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(SuperConstructorInvocation node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(SuperFieldAccess node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(SuperMethodInvocation node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(SuperMethodReference node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(SwitchCase node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(SwitchStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(SynchronizedStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(TagElement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(TextElement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ThisExpression node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(ThrowStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(TryStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(TypeDeclaration node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(TypeDeclarationStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(TypeLiteral node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(TypeMethodReference node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(TypeParameter node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(UnionType node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(UsesDirective node) {
+&nbsp;
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(VariableDeclarationExpression node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(VariableDeclarationStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(VariableDeclarationFragment node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(WhileStatement node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void visit(WildcardType node) {
+&nbsp;
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(AnnotationTypeDeclaration node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(AnnotationTypeMemberDeclaration node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(AnonymousClassDeclaration node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ArrayAccess node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ArrayCreation node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ArrayInitializer node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ArrayType node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(AssertStatement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(Assignment node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(Block node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(BlockComment node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(BooleanLiteral node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(BreakStatement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(CastExpression node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(CatchClause node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(CharacterLiteral node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ClassInstanceCreation node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(CompilationUnit node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ConditionalExpression node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ConstructorInvocation node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ContinueStatement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(CreationReference node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(DoStatement node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(EmptyStatement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(EnhancedForStatement node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(EnumConstantDeclaration node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(EnumDeclaration node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ExportsDirective node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ExpressionMethodReference node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ExpressionStatement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(Dimension node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(FieldAccess node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(FieldDeclaration node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ForStatement node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(IfStatement node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ImportDeclaration node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(InfixExpression node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(InstanceofExpression node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(Initializer node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(Javadoc node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(LabeledStatement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(LambdaExpression node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(LineComment node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(MarkerAnnotation node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(MemberRef node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(MemberValuePair node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(MethodRef node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(MethodRefParameter node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(MethodDeclaration node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(MethodInvocation node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(Modifier node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ModuleDeclaration node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ModuleModifier node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(NameQualifiedType node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(NormalAnnotation node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(NullLiteral node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(NumberLiteral node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(OpensDirective node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(PackageDeclaration node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ParameterizedType node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ParenthesizedExpression node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(PostfixExpression node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(PrefixExpression node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(PrimitiveType node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ProvidesDirective node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(QualifiedName node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(QualifiedType node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(RequiresDirective node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ReturnStatement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(SimpleName node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(SimpleType node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(SingleMemberAnnotation node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(SingleVariableDeclaration node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(StringLiteral node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(SuperConstructorInvocation node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(SuperFieldAccess node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(SuperMethodInvocation node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(SuperMethodReference node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(SwitchCase node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(SwitchStatement node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(SynchronizedStatement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(TagElement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(TextElement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ThisExpression node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(ThrowStatement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(TryStatement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(TypeDeclaration node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(TypeDeclarationStatement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(TypeLiteral node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(TypeMethodReference node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(TypeParameter node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(UnionType node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(UsesDirective node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(IntersectionType node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(VariableDeclarationExpression node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(VariableDeclarationStatement node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(VariableDeclarationFragment node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(WhileStatement node) {
+<b class="fc">&nbsp;	}</b>
+&nbsp;
+&nbsp;	default void endVisit(WildcardType node) {
+<b class="nc">&nbsp;	}</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-04-29 21:57</div>
+</div>
+</body>
+</html>
